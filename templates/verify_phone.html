@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Verify Phone</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      max-width: 400px;
+      margin: auto;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      font-size: 16px;
+      text-align: center;
+      letter-spacing: 5px;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 10px;
+      width: 100%;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .messages {
+      margin-top: 10px;
+      padding: 10px;
+      background: #f5f5f5;
+    }
+
+    .resend {
+      margin-top: 15px;
+      text-align: center;
+    }
+
+    .resend a {
+      text-decoration: none;
+      color: blue;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h2>Verify Phone</h2>
+
+  <!-- ✅ Safe fallback if phone not passed -->
+  <p>
+    We sent a 6-digit code to:
+    <b>{{ phone if phone else session.get('pending_phone') }}</b>
+  </p>
+
+  <!-- ✅ Flash messages -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="messages">
+        {% for category, message in messages %}
+          <p>{{ message }}</p>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <!-- ✅ OTP Form -->
+  <form method="POST" action="{{ url_for('verify_otp') }}"></form>
+    <input 
+      name="otp" 
+      maxlength="6" 
+      placeholder="Enter 6-digit OTP" 
+      required 
+      pattern="\d{6}" 
+      title="Enter a valid 6-digit code"
+      inputmode="numeric"
+      autocomplete="one-time-code"
+    />
+    
+    <button type="submit">Verify</button>
+  </form>
+
+  <!-- ✅ Resend OTP -->
+  <div class="resend">
+    <p>Didn't receive the code?</p>
+    <a href="{{ url_for('send_otp') }}">Resend OTP</a>
+  </div>
+
+</body>
+</html>

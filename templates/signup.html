@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <style>
+    @import url('https://fonts.cdnfonts.com/css/whitney-2');
+
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        font-family: 'Whitney', Arial, sans-serif;
+        background-color: #4B2C82;
+        color: #FFFFFF;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        margin: 0;
+        overflow-x: hidden;
+        overflow-y: auto;
+        background: linear-gradient(135deg, #4B2C82 0%, #6A4FA3 100%);
+    }
+
+    h1 {
+        font-family: 'Whitney', Arial, sans-serif;
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        text-align: center;
+        letter-spacing: 0.02em;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    h2 {
+        font-family: 'Whitney', Arial, sans-serif;
+        font-size: 1.8rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        text-align: center;
+        letter-spacing: 0.02em;
+        color: #FFFFFF;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+        position: relative;
+        z-index: 2;
+        background: linear-gradient(to right, #E0D9FF, #FFFFFF);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+
+    form {
+        background-color: #36393F;
+        padding: 2.5rem;
+        border-radius: 8px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+        width: 100%;
+        max-width: 480px;
+        backdrop-filter: blur(10px);
+        position: relative;
+        animation: fadeIn 0.5s ease-in-out;
+    }
+
+    .choice-container {
+        background-color: #2A2A2A;
+        padding: 2.5rem;
+        border-radius: 16px;
+        box-shadow: 0 16px 48px rgba(0, 0, 0, 0.6), inset 0 0 30px rgba(75, 44, 130, 0.2);
+        width: 100%;
+        max-width: 480px;
+        backdrop-filter: blur(15px);
+        position: relative;
+        animation: fadeIn 0.6s ease-in-out;
+        text-align: center;
+        border: 2px solid rgba(75, 44, 130, 0.3);
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .choice-container:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 60px rgba(75, 44, 130, 0.5), inset 0 0 30px rgba(75, 44, 130, 0.3);
+    }
+
+    .choice-container::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(75, 44, 130, 0.2) 0%, transparent 60%);
+        animation: pulse 6s infinite ease-in-out;
+        pointer-events: none;
+        z-index: 1;
+    }
+
+    .choice-container::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, transparent 40%, rgba(255, 255, 255, 0.1) 50%, transparent 60%);
+        background-size: 200%;
+        animation: shimmer 3s infinite linear;
+        pointer-events: none;
+        z-index: 1;
+    }
+
+    @keyframes pulse {
+        0% { transform: scale(1); opacity: 0.6; }
+        50% { transform: scale(1.3); opacity: 0.4; }
+        100% { transform: scale(1); opacity: 0.6; }
+    }
+
+    @keyframes shimmer {
+        0% { background-position: 200% 0; }
+        100% { background-position: -200% 0; }
+    }
+
+    .verification-container {
+        background-color: #36393F;
+        padding: 2.5rem;
+        border-radius: 8px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+        width: 100%;
+        max-width: 480px;
+        backdrop-filter: blur(10px);
+        position: relative;
+        animation: fadeIn 0.5s ease-in-out;
+        text-align: center;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: #B9BBBE;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .input-group {
+        position: relative;
+        margin-bottom: 1.5rem;
+    }
+
+    input, select {
+        width: 100%;
+        padding: 0.9rem 2.5rem 0.9rem 1rem;
+        border: none;
+        border-radius: 4px;
+        background-color: #202225;
+        color: #FFFFFF;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        outline: none;
+    }
+
+    input:focus, select:focus {
+        background-color: #2C2F33;
+        box-shadow: 0 0 0 2px #FF3B3B, 0 0 8px rgba(255, 59, 59, 0.3);
+    }
+
+    input::placeholder, select::placeholder {
+        color: #72767D;
+        font-size: 0.95rem;
+    }
+
+    select {
+        appearance: none;
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="none" stroke="%23B9BBBE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,4 6,8 10,4"/></svg>');
+        background-repeat: no-repeat;
+        background-position: right 1rem center;
+        background-size: 12px;
+    }
+
+    .password-toggle {
+        position: absolute;
+        right: 0.8rem;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        cursor: pointer;
+        width: 24px;
+        height: 24px;
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="%23B9BBBE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>');
+        background-size: cover;
+        transition: stroke 0.2s ease;
+    }
+
+    .password-toggle.visible {
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="%23B9BBBE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l20 20M5.82 6C4.62 7.18 3.8 8.5 3 10c1.2 2.3 3.6 4.5 7 6l2 1 2-1c3.4-1.5 5.8-3.7 7-6-1-1.9-2.6-3.5-4.6-4.7"/><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>');
+    }
+
+    .password-toggle:hover {
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="%23FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>');
+    }
+
+    .password-toggle.visible:hover {
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="%23FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 2l20 20M5.82 6C4.62 7.18 3.8 8.5 3 10c1.2 2.3 3.6 4.5 7 6l2 1 2-1c3.4-1.5 5.8-3.7 7-6-1-1.9-2.6-3.5-4.6-4.7"/><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>');
+    }
+
+    button {
+        width: 100%;
+        padding: 0.9rem;
+        background-color: #FF3B3B;
+        color: #FFFFFF;
+        font-size: 1rem;
+        font-weight: 600;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        margin-bottom: 1rem;
+    }
+
+    .choice-button {
+        margin: 0 0.5rem;
+        padding: 1.05rem;
+        font-size: 0.9rem;
+        font-weight: 700;
+        border-radius: 9px;
+        background: linear-gradient(135deg, #FF3B3B 0%, #D32F2F 100%);
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3), inset 0 0 10px rgba(255, 59, 59, 0.4);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        position: relative;
+        overflow: hidden;
+        z-index: 2;
+        border: 2px solid rgba(255, 59, 59, 0.5);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: #FFFFFF;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    }
+
+    .choice-button::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, transparent 100%);
+        transform: skewX(-45deg) translateX(-150%);
+        transition: transform 0.6s ease;
+        z-index: -1;
+    }
+
+    .choice-button:hover::before {
+        transform: skewX(-45deg) translateX(150%);
+    }
+
+    .choice-button:hover {
+        transform: translateY(-6px) scale(1.05);
+        box-shadow: 0 12px 36px rgba(255, 59, 59, 0.5), 0 0 0 3px rgba(255, 59, 59, 0.7);
+        background: linear-gradient(135deg, #FF4C4C 0%, #E03A3A 100%);
+    }
+
+    .choice-button:active {
+        transform: scale(0.98);
+        box-shadow: 0 6px 18px rgba(255, 59, 59, 0.4);
+    }
+
+    .choice-button::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        transition: width 0.5s ease, height 0.5s ease;
+        z-index: -1;
+    }
+
+    .choice-button:hover::after {
+        width: 300%;
+        height: 300%;
+    }
+
+    .choice-buttons-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.2rem;
+        position: relative;
+        z-index: 2;
+        padding: 1rem;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 8px;
+        box-shadow: inset 0 0 10px rgba(255, 59, 59, 0.2);
+    }
+
+    @media (min-width: 481px) {
+        .choice-buttons-wrapper {
+            flex-direction: row;
+            justify-content: center;
+        }
+
+        .choice-button {
+            width: auto;
+            min-width: 150px;
+            padding: 1.05rem;
+        }
+    }
+
+    .resend-button {
+        background-color: #43B581;
+        width: auto;
+        padding: 0.5rem 1rem;
+        margin-top: 1rem;
+    }
+
+    .resend-button:hover {
+        background-color: #357A5A;
+    }
+
+    button:hover {
+        background-color: #D32F2F;
+        box-shadow: 0 4px 12px rgba(255, 59, 59, 0.3);
+    }
+
+    button:active {
+        transform: scale(0.98);
+    }
+
+    button::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        transition: width 0.4s ease, height 0.4s ease;
+    }
+
+    button:hover::after {
+        width: 200%;
+        height: 200%;
+    }
+
+    .alert {
+        margin-bottom: 1.5rem;
+        padding: 0.8rem;
+        border-radius: 4px;
+        text-align: center;
+        font-size: 0.875rem;
+        font-weight: 500;
+        list-style: none;
+        animation: slideIn 0.3s ease-in-out;
+    }
+
+    @keyframes slideIn {
+        from { opacity: 0; transform: translateX(-20px); }
+        to { opacity: 1; transform: translateX(0); }
+    }
+
+    .alert-error {
+        background-color: #FF3B3B;
+        color: #FFFFFF;
+    }
+
+    .alert-success {
+        background-color: #43B581;
+        color: #FFFFFF;
+    }
+
+    p {
+        margin-top: 1.5rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: #B9BBBE;
+    }
+
+    a {
+        color: #00AFF4;
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.2s ease;
+    }
+
+    a:hover {
+        color: #0091D2;
+        text-decoration: underline;
+    }
+
+    #spinner {
+        display: none;
+        margin-top: 1.5rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: #B9BBBE;
+        animation: fadeIn 0.3s ease-in-out;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .loading-circle {
+        width: 20px;
+        height: 20px;
+        border: 2px solid #36393F;
+        border-top: 2px solid #FF3B3B;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        display: inline-block;
+        margin-right: 10px;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 480px) {
+        form, .choice-container, .verification-container {
+            padding: 1.5rem;
+            width: 85%;
+        }
+
+        h1 {
+            font-size: 1rem;
+        }
+
+        h2 {
+            font-size: 1.4rem;
+        }
+
+        .app-title h1 {
+            font-size: 1rem;
+        }
+
+        .app-name::before, .app-name::after {
+            display: none;
+        }
+
+        .home-button {
+            top: 10px;
+            right: 10px;
+            padding: 2px 6px;
+            font-size: 0.625rem;
+        }
+
+        input, select {
+            padding: 0.4rem 1.2rem 0.4rem 0.4rem;
+            font-size: 0.75rem;
+        }
+
+        select {
+            background-position: right 0.8rem center;
+        }
+
+        button {
+            padding: 0.5rem;
+            font-size: 0.75rem;
+        }
+
+        .choice-button {
+            padding: 0.75rem;
+            font-size: 0.75rem;
+            min-width: 100%;
+        }
+
+        .password-toggle {
+            width: 20px;
+            height: 20px;
+            right: 0.6rem;
+        }
+
+        .alert {
+            font-size: 0.7rem;
+            padding: 0.4rem;
+        }
+
+        p {
+            font-size: 0.7rem;
+        }
+
+        .input-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            font-size: 0.75rem;
+        }
+
+        #spinner {
+            font-size: 0.75rem;
+        }
+
+        .loading-circle {
+            width: 16px;
+            height: 16px;
+            border-width: 1px;
+        }
+
+        .resend-button {
+            padding: 0.3rem 0.6rem;
+            font-size: 0.75rem;
+        }
+    }
+
+    .app-title h1 {
+        font-size: 48px;
+        font-weight: 900;
+        text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
+        margin-bottom: 20px;
+        animation: titleAnimation 0.5s ease-out;
+    }
+
+    .app-name::before, .app-name::after {
+        content: "";
+        display: inline-block;
+        width: 50px;
+        height: 2px;
+        background-color: #ffffff;
+        vertical-align: middle;
+        margin: 0 10px;
+    }
+
+    @keyframes titleAnimation {
+        from {
+            opacity: 0;
+            transform: scale(0.9);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    .home-button {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        padding: 8px 16px;
+        width: auto;
+        background-color: #FF3B3B;
+        color: #FFFFFF;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .home-button:hover {
+        background-color: #D32F2F;
+        box-shadow: 0 4px 12px rgba(255, 59, 59, 0.3);
+        transform: scale(1.05);
+    }
+    </style>
+</head>
+<body>
+    <button class="home-button" onclick="window.location.href='{{ url_for('home') }}'">Return to Home</button>
+    <div class="app-title">
+        <h1><span class="app-name">FindService App</span></h1>
+    </div>
+    <h1>Sign Up</h1>
+
+    <!-- Display flash messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul>
+                {% for category, message in messages %}
+                    <li class="alert alert-{{ category }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <div id="role-choice" class="choice-container">
+        <h2>Select Role</h2>
+        <div class="choice-buttons-wrapper">
+            <button type="button" id="customer-choice" class="choice-button">Customer</button>
+            <button type="button" id="provider-choice" class="choice-button">Service Provider</button>
+        </div>
+    </div>
+
+    <div id="choice-container" class="choice-container" style="display: none;">
+        <h2>Select Signup Method</h2>
+        <div class="choice-buttons-wrapper">
+            <button type="button" id="email-choice" class="choice-button">Use Email</button>
+            <button type="button" id="phone-choice" class="choice-button">Use Phone Number</button>
+        </div>
+    </div>
+
+    <form id="emailSignupForm" action="{{ url_for('signup') }}" method="POST" style="display: none;">
+        <label for="email">Email</label>
+        <div class="input-group">
+            <input type="email" id="email" name="email" placeholder="Enter your email" required>
+        </div>
+
+        <label for="email-password">Password</label>
+        <div class="input-group">
+            <input type="password" id="email-password" name="password" placeholder="Enter your password" required>
+            <button type="button" class="password-toggle" onclick="togglePassword('email-password')"></button>
+        </div>
+
+        <div class="input-group">
+            <select id="email-role" name="role">
+                <option value="customer">Customer</option>
+                <option value="provider">Provider</option>
+            </select>
+        </div>
+
+        <div class="input-group" id="county-group" style="display: none;">
+            <label for="county">County</label>
+            <select id="county" name="county" required>
+                <option value="">Select County</option>
+                <option value="Nairobi">Nairobi</option>
+                <option value="Kajiado">Kajiado</option>
+                <option value="Kiambu">Kiambu</option>
+            </select>
+        </div>
+
+        <div class="input-group" id="sub_county-group" style="display: none;">
+            <label for="sub_county">Sub-County</label>
+            <select id="sub_county" name="sub_county" required>
+                <option value="">Select Sub-County</option>
+            </select>
+        </div>
+
+        <button type="submit">Sign Up</button>
+    </form>
+
+    <form id="phoneSignupForm" action="{{ url_for('signup') }}" method="POST" style="display: none;">
+        <div id="phoneError" class="alert alert-error" style="display: none;"></div>
+        <label for="phone">Phone Number</label>
+        <div class="input-group">
+            <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
+        </div>
+
+        <label for="phone-password">Password</label>
+        <div class="input-group">
+            <input type="password" id="phone-password" name="password" placeholder="Enter your password" required>
+            <button type="button" class="password-toggle" onclick="togglePassword('phone-password')"></button>
+        </div>
+
+        <div class="input-group">
+            <select id="phone-role" name="role">
+                <option value="customer">Customer</option>
+                <option value="provider">Provider</option>
+            </select>
+        </div>
+
+        <button type="submit">Sign Up</button>
+        <input type="hidden" name="step" value="send_otp">
+    </form>
+
+    <!-- OTP Verification Form -->
+    <form id="otpForm" action="{{ url_for('verify_otp') }}" method="POST" style="display: none;">
+        <h2>Enter OTP</h2>
+
+        <p>We sent a code to your phone number</p>
+
+        <div class="input-group">
+            <input type="text" name="otp" maxlength="6" placeholder="Enter 6-digit OTP" required>
+        </div>
+
+        <!-- carry data forward -->
+        <input type="hidden" name="phone" id="otp-phone">
+        <input type="hidden" name="password" id="otp-password">
+        <input type="hidden" name="role" id="otp-role">
+
+        <button type="submit">Verify</button>
+    </form>
+
+
+    <div id="spinner">
+        <div class="loading-circle"></div>
+        <span>Processing your signup, please wait...</span>
+    </div>
+
+    <p>Already have an account? <a href="{{ url_for('login') }}">Log in</a></p>
+
+    <script>
+        // Sub-counties data
+        var subCounties = {
+            "Nairobi": [
+                'Dagoretti North',
+                'Dagoretti South',
+                'Embakasi Central',
+                'Embakasi East',
+                'Embakasi North',
+                'Embakasi South',
+                'Embakasi West',
+                'Kamukunji',
+                'Kasarani',
+                'Kibra',
+                'Langata',
+                'Makadara',
+                'Mathare',
+                'Roysambu',
+                'Ruaraka',
+                'Starehe',
+                'Westlands'
+            ],
+            "Kajiado": [
+                'Kajiado North (Ngong, Ongata Rongai, Kiserian)',
+                'Kajiado Central (Kajiado Town)',
+                'Kajiado East (Kitengela, Isinya, Mashuuru)',
+                'Kajiado West (Magadi, Mosiro, Ewuaso-Oonkidong’i)',
+                'Kajiado South (Loitokitok, Kimana, Namanga)',
+                'Isinya',
+                'Loitokitok',
+                'Mashuru',
+                'Oloililai (Ng’atataek, Maili Tisa, Torosei, Namanga)',
+                'Elangata Wuas (Iloodokilani)'
+            ],
+            "Kiambu": [
+                'Limuru',
+                'Kikuyu',
+                'Kabete',
+                'Lari',
+                'Gatundu South',
+                'Gatundu North',
+                'Githunguri',
+                'Kiambu',
+                'Kiambaa',
+                'Juja',
+                'Ruiru',
+                'Thika Town'
+            ]
+        };
+
+        // Function to populate sub-county dropdown
+        function populateSubCounty(selectedCounty) {
+            var subCountySelect = document.getElementById('sub_county');
+            subCountySelect.innerHTML = '<option value="">Select Sub-County</option>';
+            if (selectedCounty && subCounties[selectedCounty]) {
+                subCounties[selectedCounty].forEach(function(sub) {
+                    var option = document.createElement('option');
+                    option.value = sub;
+                    option.textContent = sub;
+                    subCountySelect.appendChild(option);
+                });
+            }
+        }
+
+        // Role choice handlers
+        document.getElementById('customer-choice').addEventListener('click', function() {
+            document.getElementById('role-choice').style.display = 'none';
+            var form = document.getElementById('emailSignupForm');
+            form.style.display = 'block';
+            // Hide role dropdown
+            var roleGroup = document.getElementById('email-role').parentElement;
+            roleGroup.style.display = 'none';
+            // Set the select value to 'customer'
+            document.getElementById('email-role').value = 'customer';
+            // Show county and sub-county groups (required for customers)
+            var countyGroup = document.getElementById('county-group');
+            countyGroup.style.display = 'block';
+            document.getElementById('county').setAttribute('required', 'required');  // Ensure required
+            var subCountyGroup = document.getElementById('sub_county-group');
+            subCountyGroup.style.display = 'block';
+            document.getElementById('sub_county').setAttribute('required', 'required');  // Ensure required
+        });
+
+        document.getElementById('provider-choice').addEventListener('click', function() {
+            document.getElementById('role-choice').style.display = 'none';
+            document.getElementById('choice-container').style.display = 'block';
+            // For email form
+            var emailForm = document.getElementById('emailSignupForm');
+            var emailRoleGroup = document.getElementById('email-role').parentElement;
+            emailRoleGroup.style.display = 'none';
+            document.getElementById('email-role').value = 'provider';
+            // For phone form
+            var phoneForm = document.getElementById('phoneSignupForm');
+            var phoneRoleGroup = document.getElementById('phone-role').parentElement;
+            phoneRoleGroup.style.display = 'none';
+            document.getElementById('phone-role').value = 'provider';
+        });
+
+        // Choice handlers for provider
+        document.getElementById('email-choice').addEventListener('click', function() {
+            document.getElementById('choice-container').style.display = 'none';
+            document.getElementById('emailSignupForm').style.display = 'block';
+            // Hide county and sub-county for provider (not required)
+            var countyGroup = document.getElementById('county-group');
+            countyGroup.style.display = 'none';
+            document.getElementById('county').removeAttribute('required');  // Remove required for providers
+            var subCountyGroup = document.getElementById('sub_county-group');
+            subCountyGroup.style.display = 'none';
+            document.getElementById('sub_county').removeAttribute('required');  // Remove required for providers
+        });
+
+        document.getElementById('phone-choice').addEventListener('click', function() {
+            document.getElementById('choice-container').style.display = 'none';
+            document.getElementById('phoneSignupForm').style.display = 'block';
+        });
+
+        // Add event listener for county change (unchanged)
+        document.getElementById('county').addEventListener('change', function() {
+            populateSubCounty(this.value);
+        });
+
+        // Submit handlers (unchanged)
+        document.getElementById('emailSignupForm').addEventListener('submit', function() {
+            document.getElementById('spinner').style.display = 'flex';
+        });
+
+        document.getElementById('phoneSignupForm').addEventListener('submit', function(e) {
+            const phoneInput = document.getElementById('phone');
+            const phoneError = document.getElementById('phoneError');
+            let phoneValue = phoneInput.value.trim();
+
+            // Validate: detect email
+            if (phoneValue.includes('@')) {
+                e.preventDefault();
+                phoneError.textContent = 'Please enter a valid phone number, not an email.';
+                phoneError.style.display = 'block';
+                return;
+            }
+
+            // Validate BEFORE normalization
+            if (!(/^07\d{8}$/.test(phoneValue) || /^\+254\d{9}$/.test(phoneValue))) {
+                e.preventDefault();
+                phoneError.textContent = 'Enter valid phone: 07xxxxxxxx or +254xxxxxxxxx';
+                phoneError.style.display = 'block';
+                return;
+            }
+
+            // Normalize BEFORE submit
+            if (phoneValue.startsWith("07")) {
+                phoneInput.value = "+254" + phoneValue.substring(1);
+            }
+
+            phoneError.style.display = 'none';
+
+            // Show spinner
+            document.getElementById('spinner').style.display = 'flex';
+
+            // ✅ IMPORTANT: DO NOT preventDefault → allow normal POST to /signup
+        });
+
+
+
+
+        // Password toggle function (unchanged)
+        function togglePassword(passwordId) {
+            const passwordInput = document.getElementById(passwordId);
+            const toggleButton = passwordInput.parentElement.querySelector('.password-toggle');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleButton.classList.add('visible');
+            } else {
+                passwordInput.type = 'password';
+                toggleButton.classList.remove('visible');
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ provider.name }}'s Profile</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap');
+
+        body {
+            background: linear-gradient(135deg, #4b2c82 0%, #2a1b4f 100%);
+            color: #ffffff;
+            font-family: 'Nunito', sans-serif;
+            margin: 0;
+            padding: 40px 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+        }
+
+        h1 {
+            font-weight: 700;
+            font-size: 32px;
+            text-shadow: 2px 2px 12px rgba(0, 0, 0, 0.4);
+            margin-bottom: 30px;
+            letter-spacing: 1px;
+            color: #e0d9ff;
+            text-align: center;
+        }
+
+        .profile-container {
+            background: linear-gradient(145deg, rgba(90, 62, 149, 0.9), rgba(74, 50, 130, 0.8));
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            max-width: 700px;
+            width: 100%;
+            margin: 0 auto;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .profile-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+        }
+
+        img {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            border: 4px solid #a68cd9;
+            object-fit: cover;
+            margin: 0 auto 20px;
+            display: block;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(166, 140, 217, 0.6);
+        }
+
+        .default-profile {
+            width: 180px;
+            height: 180px;
+            background: linear-gradient(45deg, #a68cd9, #7b5db5);
+            border-radius: 50%;
+            border: 4px solid #a68cd9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-size: 18px;
+            font-weight: 600;
+            margin: 0 auto 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .default-profile:hover {
+            transform: scale(1.05);
+        }
+
+        p {
+            font-weight: 400;
+            font-size: 16px;
+            color: #e0d9ff;
+            margin: 12px 0;
+            line-height: 1.5;
+        }
+
+        p strong {
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .portfolio-section {
+            margin-top: 30px;
+            padding-top: 25px;
+            border-top: 2px dashed #a68cd9;
+            position: relative;
+        }
+
+        .portfolio-section h2 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 15px;
+            text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .portfolio-section h2::after {
+            content: '▼';
+            font-size: 16px;
+            transition: transform 0.3s ease;
+        }
+
+        .portfolio-section.collapsed h2::after {
+            transform: rotate(180deg);
+        }
+
+        .portfolio-content {
+            max-height: 500px;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+        }
+
+        .portfolio-section.collapsed .portfolio-content {
+            max-height: 0;
+        }
+
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .skill-badge {
+            background-color: #7b5db5;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #ffffff;
+            transition: background-color 0.3s ease;
+        }
+
+        .skill-badge:hover {
+            background-color: #a68cd9;
+        }
+
+        .portfolio-section ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 10px 0;
+        }
+
+        .portfolio-section ul li {
+            margin: 10px 0;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            transition: background 0.3s ease;
+        }
+
+        .portfolio-section ul li:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .portfolio-section ul li a {
+            color: #1da1f2;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .portfolio-section ul li a:hover {
+            color: #4db8ff;
+            text-decoration: underline;
+        }
+
+        button {
+            background: linear-gradient(90deg, #ff3b3b, #ff6666);
+            color: #ffffff;
+            border: none;
+            padding: 12px 24px;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            margin-top: 30px;
+            display: block;
+            width: 100%;
+            max-width: 200px;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: 0 4px 12px rgba(255, 59, 59, 0.4);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+        }
+
+        button:hover {
+            background: linear-gradient(90deg, #d32f2f, #ff4d4d);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 18px rgba(255, 59, 59, 0.6);
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(75, 44, 130, 0.95), rgba(0, 0, 0, 0.9));
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            backdrop-filter: blur(5px);
+        }
+
+        .loading-content {
+            background: linear-gradient(145deg, rgba(90, 62, 149, 0.95), rgba(58, 42, 106, 0.95));
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            color: #ffffff;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 2px solid #a68cd9;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .loading-content h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            font-weight: 700;
+            text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #a68cd9;
+            animation: spin 1s ease-in-out infinite;
+            margin-left: 10px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .profile-container {
+                padding: 20px;
+                max-width: 100%;
+            }
+            h1 {
+                font-size: 28px;
+            }
+            img, .default-profile {
+                width: 140px;
+                height: 140px;
+            }
+            p {
+                font-size: 14px;
+            }
+            .portfolio-section h2 {
+                font-size: 20px;
+            }
+            button {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        <h1>{{ provider.name }}'s Profile</h1>
+        {% if provider.profile_picture %}
+            <img src="{{ url_for('static', filename='uploads/' + provider.profile_picture) }}" alt="Profile Picture">
+        {% else %}
+            <div class="default-profile">No Profile Image</div>
+        {% endif %}
+        <p><strong>Phone:</strong> {{ provider.phone }}</p>
+        <p><strong>Service:</strong> {{ provider.service_description }}</p>
+        <p><strong>County:</strong> {{ provider.areas_served }}</p>
+        <p><strong>Sub-county:</strong> {{ provider.sub_county }}</p>
+        <p><strong>Availability:</strong> {{ provider.availability }}{% if provider.custom_availability %} ({{ provider.custom_availability }}){% endif %}</p>
+        <p><strong>Pricing:</strong> {{ provider.pricing }}</p>
+
+        <div class="portfolio-section">
+            <h2 onclick="togglePortfolio()">Portfolio</h2>
+            <div class="portfolio-content">
+                {% if provider.portfolio %}
+                    <p><strong>Skills:</strong></p>
+                    <div class="skills-list">
+                        {% for skill in provider.portfolio.skills.split(',') %}
+                            <span class="skill-badge">{{ skill.strip() }}</span>
+                        {% endfor %}
+                    </div>
+                    <p><strong>Certifications:</strong> {{ provider.portfolio.certifications or 'None' }}</p>
+                    <p><strong>Experience:</strong> {{ provider.portfolio.experience }}</p>
+                    {% if provider.portfolio.work_samples %}
+                        <p><strong>Work Samples:</strong></p>
+                        <ul>
+                            {% for sample in provider.portfolio.work_samples.split(',') %}
+                                <li><a href="{{ url_for('static', filename='uploads/' + sample) }}" target="_blank">{{ sample }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                    {% if provider.portfolio.github_links %}
+                        <p><strong>Website Link:</strong></p>
+                        <ul>
+                            {% for link in provider.portfolio.github_links.split(',') %}
+                                <li><a href="{{ link }}" target="_blank">{{ link }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                {% else %}
+                    <p>No portfolio details available.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <button id="backBtn" onclick="backToDashboard()">Back to Dashboard</button>
+    </div>
+
+    <script>
+        function togglePortfolio() {
+            const section = document.querySelector('.portfolio-section');
+            section.classList.toggle('collapsed');
+        }
+
+        function backToDashboard() {
+            const button = document.getElementById('backBtn');
+            const originalText = button.innerHTML;
+            button.innerHTML = 'Returning to dashboard <span class="spinner"></span>';
+            button.disabled = true;
+            button.style.cursor = 'not-allowed';
+            button.style.opacity = '0.7';
+
+            // Show full-screen loading overlay
+            const overlay = document.createElement('div');
+            overlay.className = 'loading-overlay';
+            overlay.innerHTML = `
+                <div class="loading-content">
+                    <h3>Returning to Dashboard</h3>
+                    <div class="spinner"></div>
+                </div>
+            `;
+            document.body.appendChild(overlay);
+            overlay.style.display = 'flex';
+
+            // Simulate loading time (adjust delay as needed; here 1.5s for visibility)
+            setTimeout(() => {
+                window.location.href = '{{ url_for('customer_dashboard') }}';
+            }, 1500);
+        }
+    </script>
+</body>
+</html>

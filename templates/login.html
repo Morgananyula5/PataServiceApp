@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+    @import url('https://fonts.cdnfonts.com/css/whitney-2');
+
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        font-family: 'Whitney', Arial, sans-serif;
+        background-color: #5865F2;
+        color: #FFFFFF;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        margin: 0;
+        overflow: hidden;
+        background: linear-gradient(135deg, #5865F2 0%, #4B55C0 100%);
+    }
+
+    h1 {
+        font-family: 'Whitney', Arial, sans-serif;
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        text-align: center;
+        letter-spacing: 0.02em;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    form {
+        background-color: #36393F;
+        padding: 2.5rem;
+        border-radius: 8px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+        width: 100%;
+        max-width: 480px;
+        backdrop-filter: blur(10px);
+        position: relative;
+        animation: fadeIn 0.5s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: #B9BBBE;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .input-group {
+        position: relative;
+        margin-bottom: 1.5rem;
+    }
+
+    input {
+        width: 100%;
+        padding: 0.9rem 2.5rem;
+        border: none;
+        border-radius: 4px;
+        background-color: #202225;
+        color: #FFFFFF;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        outline: none;
+    }
+
+    input:focus {
+        background-color: #2C2F33;
+        box-shadow: 0 0 0 2px #7289DA, 0 0 8px rgba(114, 137, 218, 0.3);
+    }
+
+    input::placeholder {
+        color: #72767D;
+        font-size: 0.95rem;
+    }
+
+    .password-toggle {
+        position: absolute;
+        right: 0.8rem;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        cursor: pointer;
+        width: 24px;
+        height: 24px;
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="%23B9BBBE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>');
+        background-size: cover;
+        transition: stroke 0.2s ease;
+    }
+
+    .password-toggle.visible {
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="%23B9BBBE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 2l20 20M5.82 6C4.62 7.18 3.8 8.5 3 10c1.2 2.3 3.6 4.5 7 6l2 1 2-1c3.4-1.5 5.8-3.7 7-6-1-1.9-2.6-3.5-4.6-4.7"/><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>');
+    }
+
+    .password-toggle:hover {
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="%23FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>');
+    }
+
+    .password-toggle.visible:hover {
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="%23FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 2l20 20M5.82 6C4.62 7.18 3.8 8.5 3 10c1.2 2.3 3.6 4.5 7 6l2 1 2-1c3.4-1.5 5.8-3.7 7-6-1-1.9-2.6-3.5-4.6-4.7"/><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>');
+    }
+
+    button {
+        width: 100%;
+        padding: 0.9rem;
+        background-color: #7289DA;
+        color: #FFFFFF;
+        font-size: 1rem;
+        font-weight: 600;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    button:hover {
+        background-color: #677BC4;
+        box-shadow: 0 4px 12px rgba(114, 137, 218, 0.3);
+    }
+
+    button:active {
+        transform: scale(0.98);
+    }
+
+    button::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        transition: width 0.4s ease, height 0.4s ease;
+    }
+
+    button:hover::after {
+        width: 200%;
+        height: 200%;
+    }
+
+    .alert {
+        margin-bottom: 1.5rem;
+        padding: 0.8rem;
+        border-radius: 4px;
+        text-align: center;
+        font-size: 0.875rem;
+        font-weight: 500;
+        list-style: none;
+        animation: slideIn 0.3s ease-in-out;
+    }
+
+    @keyframes slideIn {
+        from { opacity: 0; transform: translateX(-20px); }
+        to { opacity: 1; transform: translateX(0); }
+    }
+
+    .alert-error {
+        background-color: #F04747;
+        color: #FFFFFF;
+    }
+
+    .alert-success {
+        background-color: #43B581;
+        color: #FFFFFF;
+    }
+
+    p {
+        margin-top: 2rem;
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: #FFFFFF;
+        text-align: center;
+        padding: 0.5rem 1rem;
+        background: rgba(54, 57, 63, 0.3);
+        border-radius: 6px;
+        transition: background 0.3s ease, transform 0.3s ease;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    }
+
+    p:hover {
+        background: rgba(54, 57, 63, 0.5);
+        transform: translateY(-2px);
+    }
+
+    a {
+        color: #00AFF4;
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 1.2rem;
+        transition: color 0.2s ease, transform 0.2s ease;
+    }
+
+    a:hover {
+        color: #00CFFF;
+        text-decoration: underline;
+        transform: scale(1.05);
+    }
+
+    /* New styles for app title and input icons */
+    .app-title h1 {
+        font-size: 48px;
+        font-weight: 900;
+        text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
+        margin-bottom: 20px;
+        animation: titleAnimation 0.5s ease-out;
+    }
+
+    .app-name::before, .app-name::after {
+        content: "";
+        display: inline-block;
+        width: 50px;
+        height: 2px;
+        background-color: #ffffff;
+        vertical-align: middle;
+        margin: 0 10px;
+    }
+
+    @keyframes titleAnimation {
+        from {
+            opacity: 0;
+            transform: scale(0.9);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    .input-group.identifier-group::before {
+        content: '';
+        position: absolute;
+        left: 0.8rem;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 24px;
+        height: 24px;
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%23B9BBBE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7-10-7"/></svg>');
+        background-size: cover;
+    }
+
+    .input-group.password-group::before {
+        content: '';
+        position: absolute;
+        left: 0.8rem;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 24px;
+        height: 24px;
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%23B9BBBE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>');
+        background-size: cover;
+    }
+
+    /* Updated styles for the Return to Home button */
+    .home-button {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        padding: 8px 16px;
+        width: auto;
+        background-color: #F04747;
+        color: #FFFFFF;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .home-button:hover {
+        background-color: #D32F2F;
+        box-shadow: 0 4px 12px rgba(240, 71, 71, 0.3);
+        transform: scale(1.05);
+    }
+
+    /* Enhanced Media Queries for Better Responsiveness */
+    @media (max-width: 768px) {
+        form {
+            padding: 2rem;
+            max-width: 100%;
+        }
+        h1 {
+            font-size: 2.2rem;
+        }
+        .app-title h1 {
+            font-size: 40px;
+        }
+        .home-button {
+            top: 10px;
+            right: 10px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        form {
+            padding: 1.5rem;
+            max-width: 95%;
+        }
+        h1 {
+            font-size: 1.8rem;
+        }
+        .app-title h1 {
+            font-size: 32px;
+        }
+        .app-name::before, .app-name::after {
+            width: 20px;
+        }
+        .home-button {
+            top: 5px;
+            right: 5px;
+            padding: 6px 12px;
+            font-size: 0.9rem;
+        }
+        input {
+            padding: 0.8rem 2rem;
+            font-size: 0.9rem;
+        }
+        button {
+            padding: 0.8rem;
+            font-size: 0.9rem;
+        }
+        .input-group.identifier-group::before,
+        .input-group.password-group::before {
+            left: 0.5rem;
+            width: 18px;
+            height: 18px;
+        }
+        .password-toggle {
+            right: 0.5rem;
+            width: 18px;
+            height: 18px;
+        }
+    }
+
+    /* Enhanced Loading indicator styles */
+    #loading {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(88, 101, 242, 0.7); /* Matches page's gradient start */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease, transform 0.3s ease;
+        transform: scale(0.95);
+    }
+
+    #loading.visible {
+        opacity: 1;
+        pointer-events: auto;
+        transform: scale(1);
+    }
+
+    .spinner {
+        border: 5px solid #4B55C0; /* Gradient end color */
+        border-top: 5px solid #7289DA; /* Button color */
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+        box-shadow: 0 0 10px rgba(114, 137, 218, 0.5); /* Glow effect */
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    #loading span {
+        margin-left: 1rem;
+        font-size: 1.4rem;
+        font-weight: 600;
+        color: #FFFFFF;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        animation: pulse 1.5s infinite ease-in-out;
+    }
+
+    @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.6; }
+    }
+
+    #forgot-password {
+        margin-top: 2rem;
+        text-align: center;
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: #FFFFFF;
+        padding: 0.5rem 1rem;
+        background: rgba(54, 57, 63, 0.3);
+        border-radius: 6px;
+        transition: background 0.3s ease, transform 0.3s ease;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    }
+
+    #forgot-password:hover {
+        background: rgba(54, 57, 63, 0.5);
+        transform: translateY(-2px);
+    }
+
+    #reset-button {
+        background: none;
+        border: none;
+        color: #00AFF4;
+        font-weight: 700;
+        font-size: 1.2rem;
+        cursor: pointer;
+        padding: 0;
+        width: auto;
+        transition: color 0.2s ease, transform 0.2s ease;
+    }
+
+    #reset-button:hover {
+        color: #00CFFF;
+        text-decoration: underline;
+        transform: scale(1.05);
+    }
+
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.8);
+        padding-top: 60px;
+        backdrop-filter: blur(6px);
+        animation: modalFadeIn 0.4s ease-in-out;
+    }
+
+    @keyframes modalFadeIn {
+        from { opacity: 0; backdrop-filter: blur(0); }
+        to { opacity: 1; backdrop-filter: blur(6px); }
+    }
+
+    .modal-content {
+        background: linear-gradient(135deg, #2a2d33 0%, #1e2024 100%);
+        margin: 3% auto;
+        padding: 4.5rem;              /* ⬅ significantly more space */
+        border: none;
+        width: 92%;                   /* ⬅ almost full width */
+        max-width: 820px;             /* ⬅ BIG desktop modal */
+        min-height: 560px;            /* ⬅ tall, premium feel */
+        border-radius: 24px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.75),
+                    inset 0 1px 3px rgba(255, 255, 255, 0.15);
+        position: relative;
+        overflow: hidden;
+        animation: modalContentSlide 0.5s ease-out;
+    }
+
+
+
+    @keyframes modalContentSlide {
+        from { transform: translateY(-40px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+
+    .modal-content::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(90deg, #7289DA, #43B581, #F04747);
+        animation: gradientFlow 5s infinite linear;
+    }
+
+    @keyframes gradientFlow {
+        0% { background-position: 0% 50%; }
+        100% { background-position: 400% 50%; }
+    }
+
+    .close {
+        color: #B9BBBE;
+        float: right;
+        font-size: 32px;
+        font-weight: bold;
+        transition: color 0.3s ease, transform 0.3s ease;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+    }
+
+    .close:hover,
+    .close:focus {
+        color: #FFFFFF;
+        transform: rotate(90deg) scale(1.2);
+        cursor: pointer;
+    }
+
+    .step {
+        display: none;
+        padding: 3.5rem 3rem;     /* ⬅ very spacious */
+        min-height: 340px;        /* ⬅ taller steps */
+        transition: all 0.4s ease;
+        position: relative;
+        opacity: 0;
+        transform: translateX(20px);
+    }
+
+
+
+    .step.active {
+        display: block;
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    .step h2 {
+        font-size: 2.8rem;        /* ⬅ bigger & bolder */
+        font-weight: 900;
+        color: #FFFFFF;
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+
+
+    .step h2::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        width: 60px;
+        height: 3px;
+        background: linear-gradient(90deg, #7289DA, #5865F2);
+        transform: translateX(-50%);
+        border-radius: 2px;
+    }
+
+    .step label {
+        color: #DCDDDE;
+        font-size: 0.95rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        display: block;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    }
+
+    .step input {
+        width: 100%;
+        padding: 1.4rem 1.8rem;
+        background-color: #1A1B1E;
+        border: 2px solid transparent;
+        border-radius: 10px;
+        color: #FFFFFF;
+        font-size: 1.25rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        position: relative;
+        background: linear-gradient(145deg, #1A1B1E, #232529);
+    }
+
+    .step input:focus {
+        border-color: #7289DA;
+        background: #2C2F33;
+        box-shadow: 0 0 0 3px rgba(114, 137, 218, 0.5), 0 0 12px rgba(114, 137, 218, 0.7);
+        transform: scale(1.03);
+        outline: none;
+    }
+
+    .step input::placeholder {
+        color: #72767D;
+        font-size: 1rem;
+        opacity: 0.85;
+        transition: opacity 0.3s ease;
+    }
+
+    .step input:focus::placeholder {
+        opacity: 0.5;
+    }
+
+    .step button {
+        margin-top: 3rem;
+        padding: 1.3rem;
+        background: linear-gradient(90deg, #5865F2 0%, #43B581 100%);
+        border: none;
+        border-radius: 10px;
+        color: #FFFFFF;
+        font-size: 1.25rem;
+        font-weight: 700;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.4s ease;
+        box-shadow: 0 6px 16px rgba(88, 101, 242, 0.4);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .step button:hover {
+        background: linear-gradient(90deg, #4B55C0 0%, #3A9B70 100%);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(88, 101, 242, 0.6);
+    }
+
+    .step button:active {
+        transform: scale(0.97);
+    }
+
+    .step button::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        background: rgba(255, 255, 255, 0.4);
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        transition: width 0.5s ease, height 0.5s ease;
+    }
+
+    .step button:hover::after {
+        width: 400%;
+        height: 400%;
+    }
+
+    #reset-alert {
+        margin-top: 1.5rem;
+        padding: 1rem;
+        border-radius: 8px;
+        text-align: center;
+        font-size: 0.9rem;
+        font-weight: 600;
+        animation: slideIn 0.4s ease-in-out;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .step-close {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: #F04747;
+        color: #FFFFFF;
+        border: none;
+        border-radius: 50%;
+        width: 28px;
+        height: 28px;
+        font-size: 18px;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+        z-index: 1000;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .step-close:hover {
+        background-color: #D32F2F;
+        transform: rotate(90deg) scale(1.2);
+    }
+
+
+    @media (max-width: 480px) {
+        .modal-content {
+            max-width: 95%;
+            padding: 2.2rem;
+            min-height: 380px;
+        }
+
+        .step {
+            padding: 2rem 1.5rem;
+            min-height: 240px;
+        }
+
+        .step h2 {
+            font-size: 1.9rem;
+        }
+    }
+
+    @media (max-width: 1024px) {
+        .modal-content {
+            max-width: 90%;
+            padding: 3.5rem;
+            min-height: 500px;
+        }
+
+        .step {
+            padding: 3rem 2.5rem;
+            min-height: 300px;
+        }
+
+        .step h2 {
+            font-size: 2.4rem;
+        }
+    }
+
+
+
+    </style>
+</head>
+<body>
+    <button class="home-button" onclick="window.location.href='{{ url_for('home') }}'">Return to Home</button>
+    <div class="app-title">
+        <h1><span class="app-name">FindService App</span></h1>
+    </div>
+    <h1>Login</h1>
+
+    <!-- Display flash messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul>
+                {% for category, message in messages %}
+                    <li class="alert alert-{{ category }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <form action="{{ url_for('login') }}" method="POST">
+        <label for="email">Email or Phone Number</label>
+        <div class="input-group identifier-group">
+            <input type="text" id="email" name="email" placeholder="Enter your email or phone number" required>
+        </div>
+
+        <label for="password">Password</label>
+        <div class="input-group password-group">
+            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+            <button type="button" class="password-toggle" onclick="togglePassword()"></button>
+        </div>
+
+        <button type="submit">Login</button>
+        <div id="loading">
+            <div class="spinner"></div>
+            <span>Loading</span>
+        </div>
+    </form>
+
+    <p>Don't have an account? <a href="{{ url_for('signup') }}">Sign up</a></p>
+
+    <div id="forgot-password">
+        Forgot password? <button id="reset-button">Reset from here</button>
+    </div>
+
+    <!-- Forgot Password Modal -->
+    <div id="forgotPasswordModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div id="emailStep" class="step active">
+                <button class="step-close" onclick="closeModal()">X</button>
+                <h2>Reset Password</h2>
+                <label for="resetEmail">Enter your email</label>
+                <input type="email" id="resetEmail" placeholder="Enter your email" required>
+                <button onclick="sendResetCode()">Next</button>
+            </div>
+            <div id="codeStep" class="step">
+                <button class="step-close" onclick="closeModal()">X</button>
+                <h2>Verify Code</h2>
+                <label for="resetCode">Enter verification code</label>
+                <input type="text" id="resetCode" placeholder="Enter code" required>
+                <button onclick="verifyResetCode()">Verify</button>
+            </div>
+            <div id="passwordStep" class="step">
+                <h2>Set New Password</h2>
+                <label for="newPassword">New Password</label>
+                <input type="password" id="newPassword" placeholder="Enter new password" required>
+                <button onclick="resetPassword()">Reset Password</button>
+            </div>
+            <div id="reset-alert" class="alert" style="display: none;"></div>
+        </div>
+    </div>
+
+    <script>
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const toggleButton = document.querySelector('.password-toggle');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleButton.classList.add('visible');
+            } else {
+                passwordInput.type = 'password';
+                toggleButton.classList.remove('visible');
+            }
+        }
+
+        document.querySelector('form').addEventListener('submit', function() {
+            document.getElementById('loading').classList.add('visible');
+        });
+
+        // Forgot Password Modal
+        const modal = document.getElementById('forgotPasswordModal');
+        const resetButton = document.getElementById('reset-button');
+        const alertDiv = document.getElementById('reset-alert');
+
+        resetButton.onclick = function() {
+            modal.style.display = 'block';
+            showStep('emailStep');
+            alertDiv.style.display = 'none';
+        }
+
+        function closeModal() {
+            modal.style.display = 'none';
+        }
+
+        function showStep(stepId) {
+            document.querySelectorAll('.step').forEach(step => step.classList.remove('active'));
+            document.getElementById(stepId).classList.add('active');
+        }
+
+        function showAlert(message, type = 'error') {
+            alertDiv.textContent = message;
+            alertDiv.className = `alert alert-${type}`;
+            alertDiv.style.display = 'block';
+        }
+
+        async function sendResetCode() {
+            const email = document.getElementById('resetEmail').value;
+            if (!email) return showAlert('Email is required');
+
+            try {
+                const response = await fetch('/forgot_password', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({email})
+                });
+                const data = await response.json();
+                if (data.success) {
+                    showStep('codeStep');
+                    showAlert('Verification code sent to your email.', 'success');
+                } else {
+                    showAlert(data.error);
+                }
+            } catch (error) {
+                showAlert('An error occurred. Please try again.');
+            }
+        }
+
+        async function verifyResetCode() {
+            const email = document.getElementById('resetEmail').value;
+            const code = document.getElementById('resetCode').value;
+            if (!code) return showAlert('Code is required');
+
+            try {
+                const response = await fetch('/verify_reset_code', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({email, code})
+                });
+                const data = await response.json();
+                if (data.success) {
+                    showStep('passwordStep');
+                    showAlert('Code verified successfully.', 'success');
+                } else {
+                    showAlert(data.error);
+                }
+            } catch (error) {
+                showAlert('An error occurred. Please try again.');
+            }
+        }
+
+        async function resetPassword() {
+            const email = document.getElementById('resetEmail').value;
+            const newPassword = document.getElementById('newPassword').value;
+            if (!newPassword) return showAlert('New password is required');
+
+            try {
+                const response = await fetch('/reset_password', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({email, new_password: newPassword})
+                });
+                const data = await response.json();
+                if (data.success) {
+                    showAlert('Password reset successfully. You can now log in.', 'success');
+                    setTimeout(closeModal, 2000);
+                } else {
+                    showAlert(data.error);
+                }
+            } catch (error) {
+                showAlert('An error occurred. Please try again.');
+            }
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) closeModal();
+        }
+    </script>
+</body>
+</html>

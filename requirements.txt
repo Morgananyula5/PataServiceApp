@@ -1,0 +1,14 @@
+flask==2.3.3
+flask_session==0.5.0
+werkzeug==2.3.7
+whitenoise==6.7.0
+cloudinary==1.26.0
+requests
+flask-sqlalchemy
+psycopg2-binary
+gunicorn==22.0.0
+firebase-admin
+python-dotenv==1.0.1
+africastalking==1.2.8
+urllib3==2.2.2
+certifi==2024.8.30

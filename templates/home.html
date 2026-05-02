@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="CB-8rmbOlqEO1onIXVOLVtjVgiwyy3uPl0sUvD89bWI" />
+    <title>FindService - Connect with Trusted Local Service Providers</title>
+    <meta name="description" content="FindService Web App helps people find trusted local service professionals and helps skilled workers connect with customers easily. Sign up or log in to get started." />
+    <link rel="canonical" href="https://www.findservice.live/" />
+
+    <!-- Open Graph (Google + Social) -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="FindService Web App">
+    <meta property="og:description" content="A platform that connects customers with trusted local service professionals and helps skilled workers find customers." />
+    <meta property="og:url" content="https://www.findservice.live/" />
+    <meta property="og:site_name" content="FindService Web App">
+
+    <!-- Structured Data: Website & Web App -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "FindService Web App",
+      "url": "https://www.findservice.live/",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "All",
+      "description": "FindService Web App connects customers with trusted local service professionals and helps skilled workers showcase their services and get bookings.",
+      "publisher": {
+        "@type": "Organization",
+        "name": "FindService",
+        "url": "https://www.findservice.live/"
+      }
+    }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800;900&display=swap');
+
+        body {
+            background: linear-gradient(180deg, #4b2c82 0%, #2e1b52 100%);
+            color: #ffffff;
+            font-family: 'Nunito', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            padding: 0 12px;
+        }
+
+
+
+        h1, h2, h3 {
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        .app-title h1 {
+            font-size: 4.5rem;
+            font-weight: 900;
+            text-shadow: 4px 4px 12px rgba(0, 0, 0, 0.6);
+            margin: 60px 0 20px;
+            animation: titleAnimation 0.8s ease-out;
+        }
+
+        .app-name::before, .app-name::after {
+            content: "";
+            display: inline-block;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(to right, #ff3b3b, #ff8a65);
+            vertical-align: middle;
+            margin: 0 20px;
+            border-radius: 2px;
+        }
+
+        .hero-section {
+            padding: 80px 40px;
+            background: linear-gradient(135deg, rgba(107, 46, 130, 0.7), rgba(106, 79, 163, 0.7));
+            border-radius: 24px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            max-width: 900px;
+            width: 90%;
+            margin: 0 20px 60px;
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .hero-section h1 {
+            font-size: 3.2rem;
+            font-weight: 800;
+            margin-bottom: 30px;
+        }
+
+        .section-divider {
+            border: none;
+            height: 4px;
+            background: linear-gradient(to right, transparent, #ffdd57aa, transparent);
+            width: 70%;
+            margin: 40px auto;
+            border-radius: 4px;
+        }
+
+        .hero-description {
+            font-size: 1.5rem;
+            font-weight: 500;
+            line-height: 1.7;
+            color: #f0eaff;
+            max-width: 800px;
+            margin: 0 auto 50px;
+        }
+
+        .btn-container {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            background: #ff3b3b;
+            color: white;
+            border: none;
+            padding: 16px 40px;
+            border-radius: 12px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+            box-shadow: 0 6px 20px rgba(255, 59, 59, 0.4);
+        }
+
+        .btn:hover {
+            background: #e63939;
+            transform: translateY(-6px);
+            box-shadow: 0 12px 30px rgba(255, 59, 59, 0.5);
+        }
+
+        .features-heading {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin: 80px 0 50px;
+            text-shadow: 3px 3px 12px rgba(0, 0, 0, 0.5);
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 30px;
+            max-width: 1400px;
+            width: 90%;
+            padding: 0 20px;
+            margin-bottom: 80px;
+        }
+
+        .feature {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 16px;
+            padding: 32px;
+            transition: all 0.4s ease;
+            text-align: center;
+        }
+
+        .feature:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+        }
+
+        .feature h3 {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            color: #ffffff;
+        }
+
+        .feature p {
+            font-size: 22px;
+            line-height: 1.8;
+            color: #e0d9ff;
+            text-align: left;
+        }
+
+        .custom-notification {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            padding: 18px 28px;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+            font-size: 1.1rem;
+            font-weight: 600;
+            z-index: 2000;
+            animation: slideIn 0.5s ease-out, fadeOut 0.5s ease-out 3.5s;
+            display: none;
+            max-width: 90vw;
+        }
+
+        .custom-notification.success { background: #5a3e95; color: white; }
+        .custom-notification.error { background: #ff3b3b; color: white; }
+
+        @keyframes slideIn {
+            from { transform: translateX(120%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+
+        @keyframes titleAnimation {
+            from { opacity: 0; transform: scale(0.85); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @media (max-width: 1024px) {
+            .app-title h1 { font-size: 3.8rem; }
+            .hero-section h1 { font-size: 2.8rem; }
+            .hero-description { font-size: 1.4rem; }
+            .features-heading { font-size: 3rem; }
+        }
+
+        @media (max-width: 768px) {
+            .app-title h1 { font-size: 3.2rem; margin-top: 40px; }
+            .app-name::before, .app-name::after { width: 50px; margin: 0 12px; }
+            .hero-section { padding: 50px 25px; }
+            .hero-section h1 { font-size: 2.4rem; }
+            .hero-description { font-size: 1.3rem; }
+            .btn { padding: 14px 35px; font-size: 1.1rem; }
+            .features-heading { font-size: 2.6rem; margin: 60px 0 40px; }
+            .feature h3 { font-size: 24px; }
+            .feature p { font-size: 19px; }
+        }
+
+        @media (max-width: 480px) {
+
+            /* Global text scaling */
+            h1 { font-size: 1.9rem; }
+            h2 { font-size: 1.6rem; }
+            h3 { font-size: 1.25rem; }
+            p  { font-size: 1rem; }
+
+            /* App title */
+            .app-title h1 {
+                font-size: 2.2rem;
+                margin: 30px 0 20px;
+            }
+
+            .app-name::before,
+            .app-name::after {
+                width: 30px;
+                margin: 0 8px;
+            }
+
+            /* Hero section */
+            .hero-section {
+                padding: 28px 18px;
+                margin: 0 0 40px;
+                border-radius: 18px;
+                width: 100%;
+            }
+
+            .hero-section h1 {
+                font-size: 1.8rem;
+                margin-bottom: 20px;
+            }
+
+            .hero-description {
+                font-size: 1rem;
+                line-height: 1.6;
+                margin-bottom: 20px;
+            }
+
+            /* Buttons */
+            .btn-container {
+                flex-direction: column;
+                gap: 14px;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 100%;
+                padding: 14px;
+                font-size: 1rem;
+                border-radius: 10px;
+            }
+
+            /* Features heading */
+            .features-heading {
+                font-size: 1.9rem;
+                margin: 50px 0 30px;
+            }
+
+            /* Features grid */
+            .features {
+                grid-template-columns: 1fr;
+                gap: 18px;
+                padding: 0;
+                width: 100%;
+            }
+
+            .feature {
+                padding: 20px;
+                border-radius: 14px;
+            }
+
+            .feature h3 {
+                font-size: 1.2rem;
+                margin-bottom: 12px;
+            }
+
+            .feature p {
+                font-size: 0.95rem;
+                line-height: 1.6;
+                text-align: left;
+            }
+
+            /* Notification safety */
+            .custom-notification {
+                right: 12px;
+                left: 12px;
+                max-width: unset;
+                font-size: 0.95rem;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <!-- App Title -->
+    <div class="app-title">
+        <h1><span class="app-name">FindService Web App</span></h1>
+    </div>
+
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <h1>Welcome to FindService</h1>
+        <hr class="section-divider">
+        <p class="hero-description">
+            In need of a service ? Sign up and find trusted, skilled professionals offering a wide range of services in your area. 
+        </p>
+        <p class="hero-description">
+            Are you a skilled professional offering a service and want customers to reach you easily? if so, display your expertise and details on this platform. 
+            Whether you're seeking a service or offering one, we've got you covered!
+        </p>
+        <p class="hero-description">
+            Whether you're seeking a service or offering one, we've got you covered!
+        </p>
+        <div class="btn-container">
+            <a href="{{ url_for('signup') }}" class="btn">Sign Up</a>
+            <a href="{{ url_for('login') }}" class="btn">Log In</a>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <h2 class="features-heading">Powerful Features for Everyone</h2>
+    <div class="features">
+        <div class="feature">
+            <h3>Discover Trusted Providers</h3>
+            <p>Search and browse verified service providers in your area using powerful filters for keywords (service type, price, availability, skills), location (county, sub-county), and categories. View rich profiles showing names, photos with story indicators, contact details (phone/email with copy buttons), service descriptions, key skills, areas served, pricing, availability, and last active time.</p>
+        </div>
+        <div class="feature">
+            <h3>Instant Direct Messaging</h3>
+            <p>Connect instantly with providers via the "Message" button and enjoy a full real-time chat with text, photo/video sharing, audio/video recording, emoji reactions, quoted replies, copy/delete options, and unread indicators. Access your centralized inbox for all conversations, receive notifications, and even message the platform admin directly for support.</p>
+        </div>
+        <div class="feature">
+            <h3>Seamless Booking System</h3>
+            <p>Book services effortlessly with the intuitive "Book" button — fill out a simple form with your details and preferred date/time using a calendar picker. Bookings are sent directly to providers in real time for quick confirmation, rescheduling, or responses.</p>
+        </div>
+        <div class="feature">
+            <h3>Manage Your Bookings</h3>
+            <p>Track all past and current bookings in your personal job history, view statuses (Confirmed, Rescheduled, Cancelled), updates, and details. Rebook favorite providers with one click, or delete old records to keep your history clean and organized.</p>
+        </div>
+        <div class="feature">
+            <h3>Showcase Portfolios & Stories</h3>
+            <p>Providers can upload portfolios of past work and post images/videos in a clean grid for customers to browse and enlarge. Temporary stories (photos/videos with captions) appear as colorful animated rings around profile pictures — tap to view full-screen with progress bars.</p>
+        </div>
+        <div class="feature">
+            <h3>Reviews, Ratings & Trust</h3>
+            <p>After a service, leave detailed feedback with overall star ratings (including half-stars) for quality, punctuality, and communication, plus required written comments. View average scores, all public reviews, dates, and provider replies to make confident choices.</p>
+        </div>
+        <div class="feature">
+            <h3>Location & Maps Integration</h3>
+            <p>See each provider’s service areas (county, sub-county, neighborhood) clearly marked on an interactive Google Maps embed. Get directions from your current location when geolocation is enabled, or simply view the pinned area for easy planning.</p>
+        </div>
+        <div class="feature">
+            <h3>Enhanced Platform Experience</h3>
+            <p>Switch between English and Swahili instantly, enjoy fully responsive mobile design with touch-friendly controls, and benefit from thoughtful UX features: copy buttons, smooth chat scrolling, loading spinners, success/error toasts, confirmation dialogs, dark-mode friendly purple theme, emoji picker, and a dedicated "Give Feedback" button for suggestions or bug reports.</p>
+        </div>
+    </div>
+
+    <!-- Custom Notification -->
+    <div id="customNotification" class="custom-notification"></div>
+
+    <script>
+        // Display flash messages as notifications (if any)
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    showNotification("{{ message }}", "{{ category }}");
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('customNotification');
+            notification.textContent = message;
+            notification.className = `custom-notification ${type}`;
+            notification.style.display = 'block';
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 4000);
+        }
+
+        // Add loading state to buttons
+        document.querySelectorAll('.btn').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                this.classList.add('loading');
+                setTimeout(() => {
+                    window.location.href = this.href;
+                }, 100);
+            });
+        });
+    </script>
+</body>
+</html>

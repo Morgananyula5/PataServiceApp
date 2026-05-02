@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inbox</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap');
+        body {
+            background-color: #4b2c82;
+            color: white;
+            font-family: 'Nunito', sans-serif;
+            text-align: center;
+            position: relative;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+        h1 {
+            font-weight: 700;
+            font-size: 28px;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+            margin: 20px 0;
+        }
+        .inbox-container {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .inbox-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+        .inbox-icon {
+            width: 45px;
+            height: 45px;
+            cursor: pointer;
+        }
+        .inbox-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: red;
+            color: white;
+            font-size: 10px;
+            font-weight: bold;
+            padding: 2px 5px;
+            border-radius: 10px;
+            min-width: 14px;
+            text-align: center;
+            display: inline-block;
+        }
+        .inbox-text {
+            font-size: 14px;
+            margin-top: 5px;
+            color: #ffffff;
+        }
+        .inbox-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+        .inbox-content {
+            background-color: #1a1a1a;
+            padding: 20px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 600px;
+            height: calc(100vh - 40px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+            color: #e7e9ea;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #2f3336;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        .inbox-content:hover {
+            transform: translateY(-2px);
+        }
+        .inbox-header {
+            padding: 12px 16px;
+            border-bottom: 1px solid #2f3336;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 16px;
+            background-color: #121212;
+            border-radius: 10px 10px 0 0;
+        }
+        .inbox-header h2 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 700;
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .inbox-header-back {
+            cursor: pointer;
+            font-size: 24px;
+            color: #1da1f2;
+            transition: color 0.3s ease;
+        }
+        .inbox-header-back:hover {
+            color: #1a91da;
+        }
+        .conversation-list {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 10px 0;
+            background-color: #1a1a1a;
+            scrollbar-width: thin;
+            scrollbar-color: #4b2c82 #2f3336;
+        }
+        .conversation-list::-webkit-scrollbar {
+            width: 8px;
+        }
+        .conversation-list::-webkit-scrollbar-track {
+            background: #2f3336;
+            border-radius: 4px;
+        }
+        .conversation-list::-webkit-scrollbar-thumb {
+            background-color: #4b2c82;
+            border-radius: 4px;
+            border: 2px solid #2f3336;
+        }
+        .conversation {
+            padding: 12px 16px;
+            border-bottom: 1px solid #2f3336;
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.2s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #222222;
+        }
+        .conversation:hover {
+            background-color: #2f3336;
+            transform: translateX(5px);
+        }
+        .conversation.unread {
+            background-color: #2f3336;
+            font-weight: 600;
+        }
+        .conversation span {
+            color: #1da1f2;
+            font-size: 15px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 70%;
+        }
+        .open-btn {
+            background: none;
+            border: none;
+            color: #1da1f2;
+            cursor: pointer;
+            font-size: 14px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .open-btn:hover {
+            background-color: rgba(29, 161, 242, 0.2);
+            color: #ffffff;
+        }
+        .dm-container {
+            display: none;
+            background-color: #1a1a1a;
+            padding: 60px 0 80px;
+            border-radius: 0;
+            width: 100%;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        .dm-header {
+            background-color: #121212;
+            padding: 12px 16px;
+            border-bottom: 1px solid #2f3336;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 16px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 101;
+            border-radius: 10px 10px 0 0;
+        }
+        .dm-header h3 {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 700;
+            color: #ffffff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 80%;
+            text-transform: capitalize;
+        }
+        .dm-header-back {
+            cursor: pointer;
+            font-size: 24px;
+            color: #1da1f2;
+            transition: color 0.3s ease;
+        }
+        .dm-header-back:hover {
+            color: #1a91da;
+        }
+        .dm-messages {
+            padding: 10px 16px;
+            margin-top: 0;
+            text-align: left;
+            position: absolute;
+            top: 60px;
+            bottom: 80px;
+            left: 0;
+            right: 0;
+            overflow-y: auto;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            align-items: flex-start;
+            background-color: #1a1a1a;
+            scrollbar-width: thin;
+            scrollbar-color: #4b2c82 #2f3336;
+        }
+        .dm-messages::-webkit-scrollbar {
+            width: 8px;
+        }
+        .dm-messages::-webkit-scrollbar-track {
+            background: #2f3336;
+            border-radius: 4px;
+        }
+        .dm-messages::-webkit-scrollbar-thumb {
+            background-color: #4b2c82;
+            border-radius: 4px;
+            border: 2px solid #2f3336;
+        }
+        .message {
+            padding: 12px 16px;
+            border-radius: 12px;
+            max-width: 60%;
+            font-size: 15px;
+            position: relative;
+            background-color: #1da1f2;
+            color: white;
+            word-wrap: break-word;
+            white-space: normal;
+            line-height: 1.5;
+            display: inline-block;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s ease;
+        }
+        .message:hover {
+            transform: translateY(-2px);
+        }
+        .sent-message {
+            margin-left: 5%;
+            margin-right: 5px;
+            align-self: flex-end;
+            background-color: #1da1f2;
+        }
+        .received-message {
+            margin-right: 5%;
+            margin-left: 5px;
+            align-self: flex-start;
+            background-color: #333639;
+            color: #e7e9ea;
+        }
+        .message-content {
+            word-wrap: break-word;
+            white-space: normal;
+            display: block;
+            text-align: left;
+        }
+        .message-actions {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            margin-top: 4px;
+            position: absolute;
+            bottom: -24px;
+            right: 8px;
+            gap: 8px;
+            opacity: 0;
+            transition: opacity 0.2s ease-in-out;
+            background-color: #2f3336;
+            padding: 2px 6px;
+            border-radius: 6px;
+        }
+        .received-message .message-actions {
+            right: auto;
+            left: 8px;
+        }
+        .message:hover .message-actions {
+            opacity: 1;
+        }
+        .action-btn {
+            background: none;
+            border: none;
+            color: #e7e9ea;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 0;
+            opacity: 0.7;
+            transition: opacity 0.2s ease;
+        }
+        .action-btn:hover {
+            opacity: 1;
+        }
+        .dm-input-container {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #202c33;
+            padding: 10px 12px;
+            border-top: 1px solid #2f3336;
+            display: flex;
+            align-items: center;
+            border-radius: 0 0 15px 15px;
+            box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.2);
+        }
+        .dm-input {
+            flex-grow: 1;
+            padding: 8px 12px;
+            border: none;
+            background-color: #2f3336;
+            color: #e7e9ea;
+            font-size: 14px;
+            outline: none;
+            border-radius: 20px;
+            margin: 0 8px;
+            max-width: 65%;
+            transition: box-shadow 0.3s ease;
+        }
+        .dm-input:focus {
+            box-shadow: 0 0 5px #1da1f2;
+        }
+        .dm-input::placeholder {
+            color: #71767b;
+            opacity: 0.8;
+        }
+        .input-icons {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-right: 6px;
+        }
+        .media-btn, .mic-btn {
+            background: none;
+            border: none;
+            color: #1da1f2;
+            cursor: pointer;
+            font-size: 18px;
+            padding: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.7;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            transition: opacity 0.2s, background-color 0.2s;
+        }
+        .media-btn:hover, .mic-btn:hover {
+            opacity: 1;
+            background-color: rgba(29, 161, 242, 0.1);
+        }
+        .send-btn {
+            background: none;
+            border: none;
+            color: #1da1f2;
+            cursor: pointer;
+            font-size: 18px;
+            padding: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.7;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            transition: opacity 0.2s, background-color 0.2s;
+        }
+        .send-btn:hover {
+            opacity: 1;
+            background-color: rgba(29, 161, 242, 0.1);
+        }
+        .reply-container {
+            position: absolute;
+            bottom: 90px;
+            left: 0;
+            width: 100%;
+            background-color: #202c33;
+            padding: 6px 10px;
+            border-top: 1px solid #2f3336;
+            display: none;
+            flex-direction: column;
+            align-items: flex-start;
+            border-radius: 8px 8px 0 0;
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.2);
+        }
+        .reply-input {
+            flex-grow: 1;
+            padding: 6px 10px;
+            border: none;
+            background-color: #2f3336;
+            color: #e7e9ea;
+            font-size: 14px;
+            outline: none;
+            border-radius: 16px;
+            margin: 6px 0;
+            width: 90%;
+        }
+        .close-reply {
+            background: none;
+            border: none;
+            color: #ff3b3b;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 4px;
+            align-self: flex-end;
+        }
+        .close-reply:hover {
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <h1>Your Inbox</h1>
+    <div class="inbox-container">
+        <div class="inbox-wrapper">
+            <img src="https://img.icons8.com/?size=100&id=mXcvtsj8e1Ug&format=png&color=ffffff" alt="Inbox" class="inbox-icon" onclick="openInbox()">
+            <span class="inbox-badge" id="inboxBadge">{{ unread_count if unread_count is defined else 0 }}</span>
+            <div class="inbox-text">Inbox</div>
+        </div>
+    </div>
+
+    <div class="inbox-modal" id="inboxModal">
+        <div class="inbox-content">
+            <div class="inbox-header">
+                <span class="inbox-header-back" onclick="closeInbox()">←</span>
+                <h2>Inbox</h2>
+                <span style="width: 24px;"></span>
+            </div>
+            <div class="conversation-list" id="conversationList"></div>
+            <div class="dm-container" id="dmSection">
+                <div class="dm-header">
+                    <span class="dm-header-back" onclick="closeDM()">←</span>
+                    <h3 id="dmHeaderTitle"></h3>
+                    <span style="width: 24px;"></span>
+                </div>
+                <div class="dm-messages" id="dmMessages"></div>
+                <div class="dm-input-container">
+                    <div class="input-icons">
+                        <button class="media-btn" onclick="document.getElementById('mediaFile').click()">📷</button>
+                        <input type="file" id="mediaFile" accept="image/*,video/*" style="display: none;" onchange="handleMediaUpload(event)">
+                        <button class="mic-btn" onclick="startRecording()">🎤</button>
+                    </div>
+                    <input type="text" class="dm-input" id="dmInput" placeholder="Start a new message..." onkeypress="if(event.key === 'Enter') sendMessage()">
+                    <button class="send-btn" onclick="sendMessage()">➡️</button>
+                </div>
+                <div class="reply-container" id="replyContainer">
+                    <button class="close-reply" onclick="hideReplyContainer()">✖</button>
+                    <input type="text" class="reply-input" id="replyInput" placeholder="Type your reply..." onkeypress="if(event.key === 'Enter') sendReply()">
+                    <button class="send-btn" onclick="sendReply()">➡️</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentConversationId = null;
+        let currentReceiverId = null;
+        let currentMessageId = null;
+        let sessionUserId = "{{ session_user_id if session_user_id is defined else 1 }}";
+
+        function openInbox() {
+            console.log("Opening inbox modal");
+            document.getElementById('inboxModal').style.display = 'flex';
+            loadConversations();
+            // Automatically open the default conversation (e.g., first one or hardcoded)
+            fetch('/get_conversations')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.conversations && data.conversations.length > 0) {
+                        const defaultConv = data.conversations[0]; // Use the first conversation
+                        openConversation(defaultConv.conversation_id, defaultConv.other_user_id);
+                    }
+                })
+                .catch(error => console.error('Error fetching default conversation:', error));
+        }
+
+        function closeInbox() {
+            console.log("Closing inbox modal");
+            document.getElementById('inboxModal').style.display = 'none';
+            closeDM();
+        }
+
+        function loadConversations() {
+            console.log("Loading conversations...");
+            fetch('/get_conversations')
+                .then(response => response.json())
+                .then(data => {
+                    const conversationList = document.getElementById('conversationList');
+                    conversationList.innerHTML = '';
+                    if (data.conversations && data.conversations.length > 0) {
+                        data.conversations.forEach(conv => {
+                            const unreadCount = conv.unread_count || 0;
+                            const div = document.createElement('div');
+                            div.className = `conversation ${unreadCount > 0 ? 'unread' : ''}`;
+                            div.innerHTML = `
+                                <span>Chat with ${conv.other_user_email}</span>
+                                <button class="open-btn" onclick="openConversation('${conv.conversation_id}', '${conv.other_user_id}')">Open</button>
+                                <span>(Unread: ${unreadCount})</span>
+                            `;
+                            conversationList.appendChild(div);
+                        });
+                    } else {
+                        conversationList.innerHTML = '<div>No conversations found.</div>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading conversations:', error);
+                    document.getElementById('conversationList').innerHTML = '<div>Error loading conversations.</div>';
+                });
+        }
+
+        function openConversation(conversationId, receiverId) {
+            console.log("Opening conversation with ID:", conversationId, "Receiver ID:", receiverId);
+            currentConversationId = conversationId;
+            currentReceiverId = receiverId;
+            document.getElementById('dmSection').style.display = 'block';
+            document.getElementById('conversationList').style.display = 'none';
+            loadMessages();
+            fetch(`/get_conversation?receiver_id=${receiverId}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('dmHeaderTitle').textContent = `Chat with ${data.other_user_email || 'Unknown User'}`;
+                })
+                .catch(error => {
+                    console.error('Error fetching conversation header:', error);
+                    document.getElementById('dmHeaderTitle').textContent = 'Unknown User';
+                });
+        }
+
+        function loadMessages() {
+            if (!currentReceiverId) {
+                console.error("No receiver ID selected");
+                return;
+            }
+            console.log("Loading messages for receiver ID:", currentReceiverId);
+            fetch(`/get_conversation?receiver_id=${currentReceiverId}`)
+                .then(response => response.json())
+                .then(data => {
+                    const messagesDiv = document.getElementById('dmMessages');
+                    messagesDiv.innerHTML = '';
+                    if (data.messages && data.messages.length > 0) {
+                        data.messages.forEach(msg => {
+                            const messageDiv = document.createElement('div');
+                            messageDiv.className = msg.sender_id === sessionUserId ? 'sent-message' : 'received-message';
+                            messageDiv.dataset.messageId = msg.id;
+                            messageDiv.innerHTML = `
+                                <div class="message">
+                                    <div class="message-content"><span>${msg.message}</span></div>
+                                    <div class="message-actions">
+                                        <button class="action-btn" onclick="showReplyContainer(${msg.id})">Reply</button>
+                                    </div>
+                                </div>
+                            `;
+                            messagesDiv.appendChild(messageDiv);
+                        });
+                        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+                    } else {
+                        messagesDiv.innerHTML = '<div>No messages in this conversation.</div>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading messages:', error);
+                    document.getElementById('dmMessages').innerHTML = '<div>Error loading messages.</div>';
+                });
+        }
+
+        function closeDM() {
+            console.log("Closing DM section");
+            document.getElementById('dmSection').style.display = 'none';
+            document.getElementById('conversationList').style.display = 'block';
+            currentConversationId = null;
+            currentReceiverId = null;
+            hideReplyContainer();
+        }
+
+        function showReplyContainer(messageId) {
+            console.log("Showing reply container for message ID:", messageId);
+            currentMessageId = messageId;
+            document.getElementById('replyContainer').style.display = 'flex';
+        }
+
+        function hideReplyContainer() {
+            console.log("Hiding reply container");
+            document.getElementById('replyContainer').style.display = 'none';
+            document.getElementById('replyInput').value = '';
+            currentMessageId = null;
+        }
+
+        function sendMessage() {
+            if (!currentReceiverId) {
+                console.error("No receiver ID selected for sending message");
+                return;
+            }
+            const message = document.getElementById('dmInput').value.trim();
+            if (!message) {
+                console.warn("No message to send");
+                return;
+            }
+            fetch('/send_message', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `receiver_id=${currentReceiverId}&message=${encodeURIComponent(message)}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('dmInput').value = '';
+                    loadMessages();
+                }
+            })
+            .catch(error => console.error('Error sending message:', error));
+        }
+
+        function sendReply() {
+            if (!currentReceiverId || !currentMessageId) {
+                console.error("No receiver or message ID selected for reply");
+                return;
+            }
+            const reply = document.getElementById('replyInput').value.trim();
+            if (!reply) {
+                console.warn("No reply text entered");
+                return;
+            }
+            fetch('/send_reply', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `receiver_id=${currentReceiverId}&message=${encodeURIComponent(reply)}&reply_to=${currentMessageId}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    hideReplyContainer();
+                    loadMessages();
+                }
+            })
+            .catch(error => console.error('Error sending reply:', error));
+        }
+
+        function handleMediaUpload(event) {
+            console.log("Handling media upload");
+            // Implement media upload logic if needed
+        }
+
+        window.onload = function() {
+            console.log("Page loaded, checking initial state...");
+            fetch('/get_unread_count')
+                .then(response => response.json())
+                .then(data => {
+                    const badge = document.getElementById('inboxBadge');
+                    badge.textContent = data.count > 0 ? data.count : 0;
+                    badge.style.display = data.count > 0 ? 'inline-block' : 'none';
+                })
+                .catch(error => console.error('Error on initial unread count fetch:', error));
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,2473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Console</title>
+    <link href="https://fonts.googleapis.com/css2?family=Handlee&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Handlee', cursive;
+            background: linear-gradient(135deg, #4b367c 0%, #2a1e4a 100%);
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
+            animation: backgroundPulse 10s infinite alternate;
+        }
+        @keyframes backgroundPulse {
+            0% { background: linear-gradient(135deg, #4b367c 0%, #2a1e4a 100%); }
+            100% { background: linear-gradient(135deg, #3a2a5f 0%, #1e1436 100%); }
+        }
+        h1, h2 {
+            color: #ffffff;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5), 0 0 10px rgba(255, 255, 255, 0.2);
+            letter-spacing: 1px;
+            position: relative;
+        }
+        h1::after, h2::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -5px;
+            width: 50px;
+            height: 2px;
+            background: #ffffff;
+            transition: width 0.4s ease;
+        }
+        h1:hover::after, h2:hover::after {
+            width: 100%;
+        }
+        a.logout {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 1.2em;
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+        a.logout:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        .flash-messages {
+            list-style: none;
+            padding: 15px;
+            background: rgba(75, 54, 124, 0.9);
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+        .flash-messages li {
+            color: #ff5555;
+            font-weight: bold;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+        }
+        .search-bar {
+            max-width: 600px;
+            margin: 0 auto 20px;
+            position: relative;
+        }
+        .search-bar input {
+            width: 100%;
+            padding: 12px 20px;
+            font-family: 'Handlee', cursive;
+            font-size: 1.1em;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            transition: all 0.3s ease;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        .search-bar input:focus {
+            border-color: #ffffff;
+            background: rgba(255, 255, 255, 0.2);
+            outline: none;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+        }
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 10px;
+            background: rgba(75, 54, 124, 0.8);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        td {
+            word-break: break-word;
+            overflow-wrap: break-word;
+        }
+        th {
+            background: linear-gradient(90deg, #4b367c, #2a1e4a);
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: bold;
+        }
+        tr {
+            background: rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+        tr:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-size: 1em;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        .button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease;
+        }
+        .button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        .button span {
+            position: relative;
+            z-index: 1;
+        }
+        .remove-btn {
+            background: linear-gradient(45deg, #ff5555, #cc4444);
+            color: #ffffff;
+        }
+        .remove-btn:hover {
+            transform: scale(1.1) rotate(2deg);
+            box-shadow: 0 6px 20px rgba(255, 85, 85, 0.4);
+        }
+        .ban-btn {
+            background: linear-gradient(45deg, #f1c40f, #d4ac0d);
+            color: #ffffff;
+        }
+        .ban-btn:hover {
+            transform: scale(1.1) rotate(-2deg);
+            box-shadow: 0 6px 20px rgba(241, 196, 15, 0.4);
+        }
+        .remove-ban-btn {
+            background: linear-gradient(45deg, #43b581, #369f6a);
+            color: #ffffff;
+        }
+        .remove-ban-btn:hover {
+            transform: scale(1.1) rotate(2deg);
+            box-shadow: 0 6px 20px rgba(67, 181, 129, 0.4);
+        }
+        .return-btn {
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            color: #ffffff;
+        }
+        .return-btn:hover {
+            transform: scale(1.1) rotate(-2deg);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+        }
+        .logout-btn {
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            color: #ffffff;
+        }
+        .logout-btn:hover {
+            transform: scale(1.1) rotate(-2deg);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+        }
+        .message-btn {
+            background: linear-gradient(45deg, #1abc9c, #16a085);
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .message-btn:hover {
+            transform: scale(1.1) rotate(2deg);
+            box-shadow: 0 6px 20px rgba(26, 188, 156, 0.4);
+        }
+        .unread-count {
+            background-color: #dc3545;
+            color: white;
+            padding: 2px 5px;
+            border-radius: 10px;
+            font-size: 0.8em;
+            margin-left: 5px;
+            display: inline-block;
+            min-width: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .unread-count:empty {
+            display: none;
+        }
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 140px;
+            background: linear-gradient(135deg, #4b367c, #2a1e4a);
+            color: #ffffff;
+            text-align: center;
+            border-radius: 10px;
+            padding: 8px;
+            position: absolute;
+            z-index: 1;
+            bottom: 130%;
+            left: 50%;
+            margin-left: -70px;
+            opacity: 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+            bottom: 140%;
+        }
+        .dashboard-kpis {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+        .kpi-card {
+            background: linear-gradient(135deg, #5a3e95, #4b2c82);
+            padding: 15px;
+            border-radius: 10px;
+            width: 200px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        .kpi-card h3 {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+        .kpi-card button {
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            font-size: 1em;
+        }
+        .kpi-card button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+        }
+        .kpi-card p {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #a68cd9;
+        }
+        .alerts-container {
+            margin-bottom: 20px;
+        }
+        .alerts-container h2 {
+            margin-bottom: 10px;
+        }
+        .alerts-list {
+            list-style: none;
+            padding: 0;
+        }
+        .alerts-list li {
+            background: linear-gradient(135deg, #ff5555, #cc4444);
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .alerts-list li::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(-100%);
+            transition: transform 0.5s ease;
+        }
+        .alerts-list li:hover::before {
+            transform: translateX(100%);
+        }
+        .alerts-list li span {
+            font-weight: bold;
+            color: #ffffff;
+        }
+        .alerts-list li small {
+            color: #ffffff;
+            font-size: 0.8em;
+        }
+        .notification-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        .notification-content {
+            background: linear-gradient(135deg, #2c2c2c, #1a1a1a);
+            padding: 20px;
+            border-radius: 10px;
+            width: 500px;
+            max-height: 80vh;
+            overflow-y: auto;
+            color: #ffffff;
+            text-align: center;
+        }
+        .notification-item {
+            padding: 10px;
+            border-bottom: 1px solid #444;
+        }
+        .notification-item.unread {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .mark-read-btn {
+            background: #1da1f2;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .mark-read-btn:hover {
+            background: #1a91da;
+        }
+        .button-group {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .modal-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 auto;
+            max-width: 90%;
+        }
+        .modal-list li {
+            background: linear-gradient(135deg, #5a3e95, #4b2c82);
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            color: #ffffff;
+        }
+        .close-btn {
+            background: linear-gradient(45deg, #ff5555, #cc4444);
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            font-size: 1em;
+            margin-top: 10px;
+        }
+        .close-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(255, 85, 85, 0.4);
+        }
+        .inbox-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .inbox-content {
+            background-color: #1a1a1a;
+            padding: 15px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            height: calc(100vh - 40px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+            color: #e7e9ea;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #2f3336;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        .inbox-content:hover {
+            transform: translateY(-2px);
+        }
+        .inbox-header {
+            padding: 10px 14px;
+            border-bottom: 1px solid #2f3336;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 14px;
+            background-color: #121212;
+            border-radius: 8px 8px 0 0;
+        }
+        .inbox-header h2 {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 700;
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .inbox-header-back {
+            cursor: pointer;
+            font-size: 20px;
+            color: #1da1f2;
+            transition: color 0.3s ease;
+        }
+        .inbox-header-back:hover {
+            color: #1a91da;
+        }
+        .conversation-list {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 8px 0;
+            background-color: #1a1a1a;
+            scrollbar-width: thin;
+            scrollbar-color: #4b2c82 #2f3336;
+        }
+        .conversation-list::-webkit-scrollbar {
+            width: 6px;
+        }
+        .conversation-list::-webkit-scrollbar-track {
+            background: #2f3336;
+            border-radius: 4px;
+        }
+        .conversation-list::-webkit-scrollbar-thumb {
+            background-color: #4b2c82;
+            border-radius: 4px;
+            border: 2px solid #2f3336;
+        }
+        .conversation {
+            padding: 10px 14px;
+            border-bottom: 1px solid #2f3336;
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.2s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #222222;
+        }
+        .conversation:hover {
+            background-color: #2f3336;
+            transform: translateX(5px);
+        }
+        .conversation.unread {
+            background-color: #2f3336;
+            font-weight: 600;
+        }
+        .conversation span {
+            color: #1da1f2;
+            font-size: 14px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 70%;
+        }
+        .open-btn {
+            background: none;
+            border: none;
+            color: #1da1f2;
+            cursor: pointer;
+            font-size: 13px;
+            padding: 3px 6px;
+            border-radius: 4px;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .open-btn:hover {
+            background-color: rgba(29, 161, 242, 0.2);
+            color: #ffffff;
+        }
+        .dm-container {
+            display: none;
+            background-color: #000000;
+            padding: 50px 0 70px;
+            border-radius: 0;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: none;
+            position: relative;
+            height: calc(100vh - 40px);
+            overflow: hidden;
+            z-index: 100;
+        }
+        .dm-header {
+            background-color: #000000;
+            padding: 10px 14px;
+            border-bottom: 1px solid #2f3336;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 14px;
+            color: #e7e9ea;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 101;
+        }
+        .dm-header h3 {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 700;
+            color: #ffffff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 80%;
+        }
+        .dm-header-back {
+            cursor: pointer;
+            font-size: 20px;
+            color: #1da1f2;
+            transition: color 0.3s ease;
+        }
+        .dm-header-back:hover {
+            color: #1a91da;
+        }
+        .dm-messages {
+            background-color: #000000;
+            padding: 0 25px;
+            margin-top: 0;
+            text-align: left;
+            position: absolute;
+            top: 50px;
+            bottom: 70px;
+            left: 0;
+            right: 0;
+            overflow-y: auto;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            align-items: flex-start;
+            scrollbar-width: thin;
+            scrollbar-color: #4b2c82 #2f3336;
+            padding-bottom: 80px;
+        }
+        .dm-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+        .dm-messages::-webkit-scrollbar-track {
+            background: #2f3336;
+            border-radius: 4px;
+        }
+        .dm-messages::-webkit-scrollbar-thumb {
+            background-color: #4b2c82;
+            border-radius: 4px;
+            border: 2px solid #2f3336;
+        }
+        .sent-message,
+        .received-message {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-end;
+            gap: 8px;
+            width: 100%;
+            margin-bottom: 4px;
+            border: none;
+            box-shadow: none;
+            position: relative;
+        }
+        .sent-message {
+            justify-content: flex-start;
+        }
+        .received-message {
+            justify-content: flex-end;
+        }
+        .message {
+            padding: 6px 10px;
+            border-radius: 14px;
+            max-width: 40%;
+            font-size: 12px;
+            background-color: #1da1f2;
+            color: white;
+            word-wrap: break-word;
+            white-space: normal;
+            line-height: 1.2;
+            margin: 0 6px;
+            min-height: 24px;
+            position: relative;
+            border: none;
+            box-shadow: none;
+        }
+        .message:hover {
+            transform: translateY(-1px);
+        }
+        .sent-message .message {
+            background-color: #1da1f2;
+        }
+        .received-message .message {
+            background-color: #333639;
+            color: #e7e9ea;
+        }
+        .message-content {
+            word-wrap: break-word;
+            white-space: normal;
+            display: block;
+            text-align: left;
+        }
+        .message-actions {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 4px;
+            opacity: 0;
+            transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+            min-width: 60px;
+            position: absolute;
+            bottom: -20px;
+            right: 0;
+            z-index: 1;
+        }
+        .received-message .message-actions {
+            right: auto;
+            left: 0;
+        }
+        .message:hover .message-actions {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .action-btn, .reaction-btn {
+            background: none;
+            border: none;
+            color: #e7e9ea;
+            cursor: pointer;
+            font-size: 14px;
+            padding: 1px;
+            opacity: 0.9;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+            border-radius: 4px;
+        }
+        .action-btn:hover, .reaction-btn:hover {
+            opacity: 1;
+            transform: scale(1.05);
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        .reaction {
+            font-size: 18px;
+            cursor: pointer;
+            margin: 0 2px;
+        }
+        .pinned, .starred {
+            color: #ffd700;
+            font-size: 12px;
+            margin-right: 2px;
+        }
+        .media-content {
+            max-width: 100%;
+            border-radius: 6px;
+            margin: 3px 0;
+        }
+        .media-content.video {
+            max-width: 100%;
+            border-radius: 6px;
+        }
+        .media-content.audio {
+            width: 100%;
+            max-width: 200px;
+        }
+        .message-reactions {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .dm-input-container {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            max-width: 500px;
+            background-color: #202c33;
+            padding: 4px 8px;
+            border-top: 1px solid #2f3336;
+            display: flex;
+            align-items: center;
+            border-radius: 0 0 12px 12px;
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.2);
+        }
+        .dm-input {
+            flex-grow: 1;
+            padding: 4px 8px;
+            border: none;
+            background-color: #2f3336;
+            color: #e7e9ea;
+            font-size: 13px;
+            outline: none;
+            border-radius: 12px;
+            margin: 0 4px;
+            max-width: 65%;
+        }
+        .dm-input::placeholder {
+            color: #71767b;
+            opacity: 0.8;
+        }
+        .input-icons {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            margin-right: 4px;
+        }
+        .media-btn, .emoji-btn, .mic-btn, .video-btn {
+            background: none;
+            border: none;
+            color: #1da1f2;
+            cursor: pointer;
+            font-size: 14px;
+            padding: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.7;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            transition: opacity 0.2s, background-color 0.2s;
+        }
+        .media-btn:hover, .emoji-btn:hover, .mic-btn:hover, .video-btn:hover {
+            opacity: 1;
+            background-color: rgba(29, 161, 242, 0.1);
+        }
+        .mic-btn.recording {
+            background: linear-gradient(135deg, #ff3b3b, #d32f2f);
+            color: white;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 111, 97, 0.7); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(255, 111, 97, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 111, 97, 0); }
+        }
+        .send-btn {
+            background: none;
+            border: none;
+            color: #1da1f2;
+            cursor: pointer;
+            font-size: 14px;
+            padding: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.7;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            transition: opacity 0.2s, background-color 0.2s;
+        }
+        .send-btn:hover {
+            opacity: 1;
+            background-color: rgba(29, 161, 242, 0.1);
+        }
+        #videoOptions {
+            display: none;
+            position: absolute;
+            bottom: 30px;
+            left: 10px;
+            background: #202c33;
+            border: 1px solid #2f3336;
+            border-radius: 5px;
+            padding: 5px;
+        }
+        #videoOptions button {
+            display: block;
+            width: 100%;
+            padding: 5px;
+            background: none;
+            border: none;
+            color: #e7e9ea;
+            text-align: left;
+            cursor: pointer;
+        }
+        #videoOptions button:hover {
+            background: #2f3336;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .modal.show {
+            opacity: 1;
+        }
+        .modal-content {
+            background: linear-gradient(135deg, #4b367c, #2a1e4a);
+            padding: 25px;
+            border-radius: 15px;
+            width: 400px;
+            color: #ffffff;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+        .modal.show .modal-content {
+            transform: scale(1);
+        }
+        .modal-content h2 {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        .modal-content p {
+            font-size: 1.2em;
+            margin-bottom: 25px;
+            color: #e0e0e0;
+        }
+        .modal-content button {
+            padding: 12px 25px;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            margin: 0 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        .modal-content button.confirm {
+            background: linear-gradient(45deg, #43b581, #369f6a);
+            color: #ffffff;
+        }
+        .modal-content button.confirm:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(67, 181, 129, 0.5);
+        }
+        .modal-content button.cancel {
+            background: linear-gradient(45deg, #ff5555, #cc4444);
+            color: #ffffff;
+        }
+        .modal-content button.cancel:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(255, 85, 85, 0.5);
+        }
+        #resultModal .modal-content {
+            width: 400px;
+        }
+        #resultModal .modal-content h2 {
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+        #resultModal .modal-content p {
+            margin-bottom: 20px;
+            font-size: 1.1em;
+        }
+        #resultModal .modal-content button {
+            background: linear-gradient(45deg, #43b581, #369f6a);
+            color: #ffffff;
+        }
+        #resultModal .modal-content button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(67, 181, 129, 0.4);
+        }
+        /* New styles for header buttons and View Feedback */
+        .header-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .view-feedback-btn {
+            background: linear-gradient(45deg, #1abc9c, #16a085);
+            color: #ffffff;
+        }
+        .view-feedback-btn:hover {
+            transform: scale(1.1) rotate(2deg);
+            box-shadow: 0 6px 20px rgba(26, 188, 156, 0.4);
+        }
+        .feedback-count-badge {
+            background-color: #dc3545;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 10px;
+            font-size: 0.9em;
+            margin-left: 5px;
+            display: inline-block;
+            min-width: 20px;
+            text-align: center;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .feedback-count-badge:empty {
+            display: none;
+        }
+        .feedback-count-badge:hover {
+            transform: scale(1.1);
+        }
+        .feedback-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        .feedback-content {
+            background: linear-gradient(135deg, #2a1e4a, #1a1436);
+            padding: 30px;
+            border-radius: 20px;
+            width: 700px;
+            max-height: 85vh;
+            overflow-y: auto;
+            color: #ffffff;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
+            position: relative;
+            animation: fadeIn 0.5s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .feedback-content h2 {
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            border-bottom: 2px solid #ffffff;
+            padding-bottom: 10px;
+        }
+        .feedback-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .feedback-list li {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .feedback-list li:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+        .feedback-list li strong {
+            color: #a68cd9;
+            font-weight: bold;
+        }
+        .feedback-list li br {
+            margin-bottom: 5px;
+        }
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 24px;
+            color: #ffffff;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        .modal-close:hover {
+            color: #ff5555;
+        }
+
+        .notification-count-badge {
+            background-color: #dc3545;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 10px;
+            font-size: 0.9em;
+            margin-left: 5px;
+            display: inline-block;
+            min-width: 20px;
+            text-align: center;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .notification-count-badge:empty {
+            display: none;
+        }
+        .notification-count-badge:hover {
+            transform: scale(1.1);
+        }
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            html {
+                background: #4b367c; /* Changed to solid color for better performance */
+                background-attachment: fixed; /* Prevents repaints during scrolling */
+            }
+            body {
+                font-size: 14px;
+                animation: none; /* Disables background animation to reduce load */
+            }
+            table {
+                display: block;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                font-size: 12px;
+                box-shadow: none; /* Remove box-shadow for better performance */
+                contain: paint; /* Limit repaint area to optimize rendering */
+            }
+            .dashboard-kpis {
+                flex-direction: column;
+                align-items: center;
+            }
+            .kpi-card {
+                width: 90%;
+                margin-bottom: 20px;
+            }
+            .search-bar {
+                width: 100%;
+                max-width: none;
+            }
+            .search-bar input {
+                width: 100%;
+            }
+            .button-group {
+                flex-direction: column;
+                align-items: center;
+            }
+            .button {
+                padding: 5px 10px;
+                font-size: 0.8em;
+                width: 100%;
+                margin: 0;
+                transition: none; /* Removes transitions to reduce rendering effort */
+                will-change: transform; /* Hints browser to optimize button rendering */
+            }
+            .button::before {
+                transition: none; /* Removes pseudo-element transitions */
+            }
+            .modal-content {
+                width: 100%;
+                height: 100%;
+                border-radius: 0;
+                padding: 20px;
+                box-sizing: border-box;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+            #actionModal .modal-content textarea {
+                width: 100%;
+                height: 200px;
+                margin-bottom: 20px;
+            }
+            .modal-content button {
+                width: 100%;
+                padding: 12px;
+                font-size: 1em;
+                margin: 10px 0;
+            }
+            .feedback-content {
+                width: 100%;
+                height: 100%;
+                max-height: none;
+                border-radius: 0;
+                padding: 20px;
+                box-sizing: border-box;
+            }
+            .notification-content {
+                width: 100%;
+                height: 100%;
+                max-height: none;
+                border-radius: 0;
+                padding: 20px;
+                box-sizing: border-box;
+            }
+            .container {
+                padding: 10px;
+                contain: paint; /* Limits repaints to container boundaries */
+                box-shadow: none; /* Remove box-shadow for better performance */
+            }
+            table th, table td {
+                padding: 8px;
+            }
+            tr {
+                transition: none; /* Removes row transitions to ease rendering */
+                will-change: transform; /* Optimizes rendering for table rows */
+            }
+            .inbox-content {
+                width: 100%;
+                height: 100%;
+                max-width: none;
+                border-radius: 0;
+                padding: 0;
+                margin: 0;
+            }
+            .dm-container {
+                max-width: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Admin Console</h1>
+        <div class="header-buttons">
+            <button class="button view-feedback-btn" onclick="viewFeedback()">
+                <span>View Feedback</span>
+                <span id="feedbackCountBadge" class="feedback-count-badge"></span>
+            </button>
+            <button class="button notification-btn" onclick="viewNotifications()">
+                <span>Notifications</span>
+                <span id="notificationCountBadge" class="notification-count-badge"></span>
+            </button>
+            <button class="button logout-btn" onclick="window.location.href='{{ url_for('logout') }}'"><span>Logout</span></button>
+        </div>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul class="flash-messages">
+                    {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+
+        <div class="dashboard-kpis">
+            <div class="kpi-card">
+                <h3>Active Users</h3>
+                <button onclick="showActiveUsers()" id="active-users-btn">Loading...</button>
+            </div>
+            <div class="kpi-card">
+                <h3>Pending Bookings</h3>
+                <button onclick="showPendingBookings()" id="pending-bookings-btn">Loading...</button>
+            </div>
+            <div class="kpi-card">
+                <h3>Avg Provider Rating</h3>
+                <p id="avg-provider-rating">Loading...</p>
+            </div>
+            <div class="kpi-card">
+                <h3>Customer Satisfaction</h3>
+                <p id="customer-satisfaction">Loading...</p>
+            </div>
+        </div>
+
+        <div class="alerts-container">
+            <h2>Alerts</h2>
+            <ul id="alerts-list" class="alerts-list"></ul>
+        </div>
+
+        <h2>Providers</h2>
+        <div class="search-bar">
+            <input type="text" id="providerSearch" placeholder="Search Providers..." onkeyup="searchTable('providerTable', 'providerSearch')">
+        </div>
+        <table id="providerTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Status</th>
+                    <th>Last Login</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for provider in providers if provider.status != 'banned' and provider.status != 'removed' %}
+                <tr>
+                    <td>{{ provider.id }}</td>
+                    <td>{{ provider.name }}</td>
+                    <td>{{ provider.email }}</td>
+                    <td>{{ provider.status if provider.status else 'active' }}</td>
+                    <td>{{ provider.last_login if provider.last_login else 'N/A' }}</td>
+                    <td>
+                        <div class="button-group">
+                            <button onclick="openActionModal({{ provider.id }}, 'remove_provider')" class="button remove-btn tooltip">
+                                <span>Remove</span>
+                                <span class="tooltiptext">Delete this provider</span>
+                            </button>
+                            {% if provider.status != 'banned' %}
+                                <button onclick="openActionModal({{ provider.id }}, 'ban_provider')" class="button ban-btn tooltip">
+                                    <span>Ban</span>
+                                    <span class="tooltiptext">Ban this provider</span>
+                                </button>
+                            {% endif %}
+                            <button class="button message-btn tooltip" onclick="openChatWithUser({{ provider.id }})">
+                                <span>Message</span>
+                                <span id="unread-count-{{ provider.id }}" class="unread-count"></span>
+                                <span class="tooltiptext">Message this provider</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h2>Banned Providers</h2>
+        <div class="search-bar">
+            <input type="text" id="bannedProviderSearch" placeholder="Search Banned Providers..." onkeyup="searchTable('bannedProviderTable', 'bannedProviderSearch')">
+        </div>
+        <table id="bannedProviderTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Status</th>
+                    <th>Last Login</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for provider in providers if provider.status == 'banned' %}
+                <tr>
+                    <td>{{ provider.id }}</td>
+                    <td>{{ provider.name }}</td>
+                    <td>{{ provider.email }}</td>
+                    <td>{{ provider.status }}</td>
+                    <td>{{ provider.last_login if provider.last_login else 'N/A' }}</td>
+                    <td>
+                        <div class="button-group">
+                            <button onclick="openUnbanModal('provider', {{ provider.id }})" class="button remove-ban-btn tooltip">
+                                <span>Unban</span>
+                                <span class="tooltiptext">Unban this provider</span>
+                            </button>
+                            <button class="button message-btn tooltip" onclick="openChatWithUser({{ provider.id }})">
+                                <span>Message</span>
+                                <span id="unread-count-{{ provider.id }}" class="unread-count"></span>
+                                <span class="tooltiptext">Message this provider</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h2>Removed Providers</h2>
+        <div class="search-bar">
+            <input type="text" id="removedProviderSearch" placeholder="Search Removed Providers..." onkeyup="searchTable('removedProviderTable', 'removedProviderSearch')">
+        </div>
+        <table id="removedProviderTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Status</th>
+                    <th>Last Login</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for provider in providers if provider.status == 'removed' %}
+                <tr>
+                    <td>{{ provider.id }}</td>
+                    <td>{{ provider.name }}</td>
+                    <td>{{ provider.email }}</td>
+                    <td>{{ provider.status }}</td>
+                    <td>{{ provider.last_login if provider.last_login else 'N/A' }}</td>
+                    <td>
+                        <div class="button-group">
+                            <button onclick="openReturnModal('provider', {{ provider.id }})" class="button return-btn tooltip">
+                                <span>Return</span>
+                                <span class="tooltiptext">Return this provider</span>
+                            </button>
+                            <button class="button message-btn tooltip" onclick="openChatWithUser({{ provider.id }})">
+                                <span>Message</span>
+                                <span id="unread-count-{{ provider.id }}" class="unread-count"></span>
+                                <span class="tooltiptext">Message this provider</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h2>Service Management</h2>
+        <table id="serviceTable">
+            <thead>
+                <tr>
+                    <th>Provider Email</th>
+                    <th>Service Category</th>
+                    <th>Bookings</th>
+                    <th>Issues</th>
+                </tr>
+            </thead>
+            <tbody id="serviceList">
+            </tbody>
+        </table>
+
+        <h2>Customers</h2>
+        <div class="search-bar">
+            <input type="text" id="customerSearch" placeholder="Search Customers..." onkeyup="searchTable('customerTable', 'customerSearch')">
+        </div>
+        <table id="customerTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Status</th>
+                    <th>Last Login</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for customer in customers if customer.status != 'banned' and customer.status != 'removed' %}
+                <tr>
+                    <td>{{ customer.id }}</td>
+                    <td>{{ customer.name }}</td>
+                    <td>{{ customer.email }}</td>
+                    <td>{{ customer.status if customer.status else 'active' }}</td>
+                    <td>{{ customer.last_login if customer.last_login else 'N/A' }}</td>
+                    <td>
+                        <div class="button-group">
+                            <button onclick="openActionModal({{ customer.id }}, 'remove_customer')" class="button remove-btn tooltip">
+                                <span>Remove</span>
+                                <span class="tooltiptext">Delete this customer</span>
+                            </button>
+                            {% if customer.status != 'banned' %}
+                                <button onclick="openActionModal({{ customer.id }}, 'ban_customer')" class="button ban-btn tooltip">
+                                    <span>Ban</span>
+                                    <span class="tooltiptext">Ban this customer</span>
+                                </button>
+                            {% endif %}
+                            <button class="button message-btn tooltip" onclick="openChatWithUser({{ customer.id }})">
+                                <span>Message</span>
+                                <span id="unread-count-{{ customer.id }}" class="unread-count"></span>
+                                <span class="tooltiptext">Message this customer</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h2>Banned Customers</h2>
+        <div class="search-bar">
+            <input type="text" id="bannedCustomerSearch" placeholder="Search Banned Customers..." onkeyup="searchTable('bannedCustomerTable', 'bannedCustomerSearch')">
+        </div>
+        <table id="bannedCustomerTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Status</th>
+                    <th>Last Login</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for customer in customers if customer.status == 'banned' %}
+                <tr>
+                    <td>{{ customer.id }}</td>
+                    <td>{{ customer.name }}</td>
+                    <td>{{ customer.email }}</td>
+                    <td>{{ customer.status }}</td>
+                    <td>{{ customer.last_login if customer.last_login else 'N/A' }}</td>
+                    <td>
+                        <div class="button-group">
+                            <button onclick="openUnbanModal('customer', {{ customer.id }})" class="button remove-ban-btn tooltip">
+                                <span>Unban</span>
+                                <span class="tooltiptext">Unban this customer</span>
+                            </button>
+                            <button class="button message-btn tooltip" onclick="openChatWithUser({{ customer.id }})">
+                                <span>Message</span>
+                                <span id="unread-count-{{ customer.id }}" class="unread-count"></span>
+                                <span class="tooltiptext">Message this customer</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h2>Removed Customers</h2>
+        <div class="search-bar">
+            <input type="text" id="removedCustomerSearch" placeholder="Search Removed Customers..." onkeyup="searchTable('removedCustomerTable', 'removedCustomerSearch')">
+        </div>
+        <table id="removedCustomerTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Status</th>
+                    <th>Last Login</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for customer in customers if customer.status == 'removed' %}
+                <tr>
+                    <td>{{ customer.id }}</td>
+                    <td>{{ customer.name }}</td>
+                    <td>{{ customer.email }}</td>
+                    <td>{{ customer.status }}</td>
+                    <td>{{ customer.last_login if customer.last_login else 'N/A' }}</td>
+                    <td>
+                        <div class="button-group">
+                            <button onclick="openReturnModal('customer', {{ customer.id }})" class="button return-btn tooltip">
+                                <span>Return</span>
+                                <span class="tooltiptext">Return this customer</span>
+                            </button>
+                            <button class="button message-btn tooltip" onclick="openChatWithUser({{ customer.id }})">
+                                <span>Message</span>
+                                <span id="unread-count-{{ customer.id }}" class="unread-count"></span>
+                                <span class="tooltiptext">Message this customer</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Existing Modals -->
+    <div id="notificationModal" class="notification-modal">
+        <div class="notification-content">
+            <h2>Notifications</h2>
+            <div id="notificationList"></div>
+            <button class="button close-btn" onclick="closeNotifications()">Close</button>
+        </div>
+    </div>
+
+    <div id="activeUsersModal" class="notification-modal">
+        <div class="notification-content">
+            <h2>Active Users</h2>
+            <ul id="activeUsersList" class="modal-list"></ul>
+            <button class="button close-btn" onclick="closeActiveUsers()">Close</button>
+        </div>
+    </div>
+
+    <div id="pendingBookingsModal" class="notification-modal">
+        <div class="notification-content">
+            <h2>Pending Bookings</h2>
+            <ul id="pendingBookingsList" class="modal-list"></ul>
+            <button class="button close-btn" onclick="closePendingBookings()">Close</button>
+        </div>
+    </div>
+
+    <!-- Chat Modal -->
+    <div class="inbox-modal" id="inboxModal">
+        <div class="inbox-content">
+            <div class="inbox-header">
+                <span class="inbox-header-back" onclick="closeInbox()">←</span>
+                <h2>Inbox</h2>
+                <span style="width: 24px;"></span>
+            </div>
+            <div class="conversation-list" id="conversationList"></div>
+            <div class="dm-container" id="dmSection">
+                <div class="dm-header">
+                    <span class="dm-header-back" onclick="closeDM()">←</span>
+                    <h3>Chat with <span id="dmHeaderName"></span></h3>
+                    <span style="width: 24px;"></span>
+                </div>
+                <div class="dm-messages" id="dmMessages"></div>
+                <div class="dm-input-container">
+                    <div class="input-icons">
+                        <button class="media-btn" onclick="document.getElementById('mediaFile').click()">📷</button>
+                        <input type="file" id="mediaFile" accept="image/*,video/*" style="display: none;" onchange="handleMediaUpload(event)">
+                        <button class="emoji-btn" onclick="showEmojiPicker()">😊</button>
+                        <button class="mic-btn" onclick="toggleRecording()">🎤</button>
+                        <button class="video-btn" onclick="toggleVideoOptions()">📹</button>
+                    </div>
+                    <input type="text" class="dm-input" id="dmInput" placeholder="Start a new message..." onkeypress="if(event.key === 'Enter') sendMessage()">
+                    <button class="send-btn" onclick="sendMessage()">➡️</button>
+                    <div id="videoOptions">
+                        <button onclick="document.getElementById('videoInput').click()">Upload Video</button>
+                        <button onclick="toggleVideoRecording()">Record Video</button>
+                    </div>
+                    <input type="file" id="videoInput" accept="video/*" style="display: none;" onchange="handleMediaUpload(event)">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action Modal -->
+    <div id="actionModal" class="modal">
+        <div class="modal-content">
+            <h2 id="actionTitle"></h2>
+            <p>Please provide a reason for this action:</p>
+            <textarea id="actionReason" rows="4" cols="50"></textarea>
+            <button class="confirm" onclick="confirmAction()">Confirm</button>
+            <button class="cancel" onclick="closeActionModal()">Cancel</button>
+        </div>
+    </div>
+
+    <!-- Unban Confirmation Modal -->
+    <div id="unbanModal" class="modal">
+        <div class="modal-content">
+            <h2>Unban Confirmation</h2>
+            <p>Are you sure you want to unban this <span id="unbanType"></span>?</p>
+            <button class="confirm" onclick="confirmUnban()">Yes</button>
+            <button class="cancel" onclick="closeUnbanModal()">No</button>
+        </div>
+    </div>
+
+    <!-- Return Confirmation Modal -->
+    <div id="returnModal" class="modal">
+        <div class="modal-content">
+            <h2>Return Confirmation</h2>
+            <p>Are you sure you want to return this <span id="returnType"></span>?</p>
+            <button class="confirm" onclick="confirmReturn()">Yes</button>
+            <button class="cancel" onclick="closeReturnModal()">No</button>
+        </div>
+    </div>
+
+    <!-- Result Notification Modal -->
+    <div id="resultModal" class="modal">
+        <div class="modal-content">
+            <h2 id="resultTitle">Action Status</h2>
+            <p id="resultMessage"></p>
+            <button onclick="closeResultModal()">OK</button>
+        </div>
+    </div>
+
+    <!-- Feedback Modal (Updated with Delete All Button) -->
+    <div id="feedbackModal" class="feedback-modal">
+        <div class="feedback-content">
+            <span class="modal-close" onclick="closeFeedback()">×</span>
+            <h2>Customer Feedback</h2>
+            <button class="button" onclick="deleteAllFeedback()">Delete All</button>
+            <ul id="feedbackList" class="feedback-list"></ul>
+            <button class="button close-btn" onclick="closeFeedback()">Close</button>
+        </div>
+    </div>
+
+    <!-- Admin Notification Modal -->
+    <div id="adminNotificationModal" class="feedback-modal">
+        <div class="feedback-content">
+            <span class="modal-close" onclick="closeAdminNotifications()">×</span>
+            <h2>Admin Notifications</h2>
+            <p style="font-size: 0.9em; color: #a68cd9;">Read notifications will be deleted when you close this modal.</p>
+            <ul id="adminNotificationList" class="feedback-list"></ul>
+            <button class="button close-btn" onclick="closeAdminNotifications()">Close</button>
+        </div>
+    </div>
+    
+
+    <script>
+        function searchTable(tableId, inputId) {
+            let input = document.getElementById(inputId);
+            let filter = input.value.toLowerCase();
+            let table = document.getElementById(tableId);
+            let tr = table.getElementsByTagName("tr");
+
+            for (let i = 1; i < tr.length; i++) {
+                let tdEmail = tr[i].getElementsByTagName("td")[2];
+                if (tdEmail) {
+                    let txtValue = tdEmail.textContent || tdEmail.innerText;
+                    tr[i].style.display = txtValue.toLowerCase().indexOf(filter) > -1 ? "" : "none";
+                }
+            }
+        }
+
+        function fetchKPIs() {
+            fetch('/api/admin/dashboard-metrics')
+                .then(response => response.json())
+                .then(data => {
+                    // Active Users and Pending Bookings (unchanged)
+                    document.getElementById('active-users-btn').textContent = data.activeUsers || 'N/A';
+                    document.getElementById('pending-bookings-btn').textContent = data.pendingBookings || 'N/A';
+                    
+                    // Avg Provider Rating
+                    const avgRating = data.avgProviderRating;
+                    document.getElementById('avg-provider-rating').textContent = avgRating !== null ? avgRating.toFixed(1) : 'N/A';
+                    
+                    // Customer Satisfaction
+                    const customerSatisfaction = data.customerSatisfaction;
+                    document.getElementById('customer-satisfaction').textContent = customerSatisfaction !== null ? `${customerSatisfaction}%` : 'N/A';
+                })
+                .catch(error => console.error('Error fetching KPIs:', error));
+        }
+
+        function fetchAlerts() {
+            fetch('/api/admin/alerts')
+                .then(response => response.json())
+                .then(alerts => {
+                    const alertsList = document.getElementById('alerts-list');
+                    alertsList.innerHTML = '';
+                    alerts.forEach(alert => {
+                        const li = document.createElement('li');
+                        li.innerHTML = `<span>${alert.message}</span><br><small>${alert.timestamp || 'N/A'}</small>`;
+                        alertsList.appendChild(li);
+                    });
+                    console.log('Alerts data:', alerts); // Debugging to verify data
+                })
+                .catch(error => console.error('Error fetching alerts:', error));
+        }
+
+        function fetchServices() {
+            fetch('/api/admin/services')
+                .then(response => response.json())
+                .then(services => {
+                    const serviceList = document.getElementById('serviceList');
+                    serviceList.innerHTML = '';
+                    services.forEach(service => {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td>${service.email}</td>
+                            <td>${service.category || 'N/A'}</td>
+                            <td>${service.bookings}</td>
+                            <td>${service.issues}</td>
+                        `;
+                        serviceList.appendChild(tr);
+                    });
+                })
+                .catch(error => console.error('Error fetching services:', error));
+        }
+
+        function fetchNotifications() {
+            fetch('/api/admin/notifications')
+                .then(response => response.json())
+                .then(notifications => {
+                    const notificationList = document.getElementById('notificationList');
+                    notificationList.innerHTML = '';
+                    notifications.forEach(notif => {
+                        const div = document.createElement('div');
+                        div.className = 'notification-item' + (notif.unread ? ' unread' : '');
+                        div.innerHTML = `
+                            <p>${notif.message}</p>
+                            ${notif.unread ? `<button class="mark-read-btn" onclick="markRead(${notif.id})">Mark Read</button>` : ''}
+                        `;
+                        notificationList.appendChild(div);
+                    });
+                })
+                .catch(error => console.error('Error fetching notifications:', error));
+        }
+
+        function markRead(notificationId) {
+            fetch(`/api/admin/mark_notification_read/${notificationId}`, { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) fetchNotifications();
+                })
+                .catch(error => console.error('Error marking notification as read:', error));
+        }
+
+        function openNotifications() {
+            document.getElementById('notificationModal').style.display = 'flex';
+            fetchNotifications();
+        }
+
+        function closeNotifications() {
+            document.getElementById('notificationModal').style.display = 'none';
+        }
+
+        function showActiveUsers() {
+            document.getElementById('activeUsersModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+            fetchActiveUsers();
+        }
+
+        function closeActiveUsers() {
+            document.getElementById('activeUsersModal').style.display = 'none';
+            document.body.style.overflow = ''; // Restore default scrolling
+        }
+
+        function fetchActiveUsers() {
+            fetch('/api/admin/active-users')
+                .then(response => response.json())
+                .then(users => {
+                    const list = document.getElementById('activeUsersList');
+                    list.innerHTML = '';
+                    users.forEach(user => {
+                        const li = document.createElement('li');
+                        li.textContent = `${user.email} (Last login: ${user.last_login || 'N/A'})`;
+                        list.appendChild(li);
+                    });
+                })
+                .catch(error => console.error('Error fetching active users:', error));
+        }
+
+        function showPendingBookings() {
+            document.getElementById('pendingBookingsModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+            fetchPendingBookings();
+        }
+
+        function closePendingBookings() {
+            document.getElementById('pendingBookingsModal').style.display = 'none';
+            document.body.style.overflow = ''; // Restore default scrolling
+        }
+
+        function fetchPendingBookings() {
+            fetch('/api/admin/pending-bookings')
+                .then(response => response.json())
+                .then(bookings => {
+                    const list = document.getElementById('pendingBookingsList');
+                    list.innerHTML = '';
+                    bookings.forEach(booking => {
+                        const li = document.createElement('li');
+                        li.textContent = `Booking ID: ${booking.id}, Customer: ${booking.customer_email}, Provider: ${booking.provider_name}, Service Date: ${booking.service_date}`;
+                        list.appendChild(li);
+                    });
+                })
+                .catch(error => console.error('Error fetching pending bookings:', error));
+        }
+
+        function fetchUnreadCounts() {
+            fetch('/api/admin/unread_message_counts')
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach(user => {
+                        const unreadSpan = document.getElementById(`unread-count-${user.id}`);
+                        if (unreadSpan) {
+                            unreadSpan.textContent = user.unread_count > 0 ? user.unread_count : '';
+                        }
+                    });
+                })
+                .catch(error => console.error('Error fetching unread counts:', error));
+        }
+
+        function fetchNewFeedbackCount() {
+            fetch('/api/admin/new_feedback_count')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const count = data.count || 0;
+                    const badge = document.getElementById('feedbackCountBadge');
+                    badge.textContent = count > 0 ? count : '';
+                })
+                .catch(error => console.error('Error fetching new feedback count:', error));
+        }
+
+        let mediaRecorders = {};
+        let audioChunks = {};
+        let currentReceiverId = null;
+        let currentConversationId = null;
+        let currentMessageId = null;
+        let isRecording = false;
+        let pendingDeleteMessageId = null;
+        let pendingDeleteType = null;
+        let videoRecorder = null;
+        let videoChunks = [];
+        let isVideoRecording = false;
+
+        function openChatWithUser(userId) {
+            currentReceiverId = userId;
+            document.getElementById('inboxModal').style.display = 'flex';
+            document.getElementById('dmSection').style.display = 'block';
+            document.getElementById('conversationList').style.display = 'none';
+            fetchConversationByReceiver(userId);
+            fetch(`/get_user_name?user_id=${userId}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('dmHeaderName').textContent = data.name;
+                });
+            fetch(`/mark_messages_as_read?receiver_id=${userId}`, { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        fetchUnreadCounts();
+                    }
+                });
+        }
+
+        function openInbox() {
+            document.getElementById('inboxModal').style.display = 'flex';
+            document.getElementById('conversationList').style.display = 'block';
+            document.getElementById('dmSection').style.display = 'none';
+            fetchConversations();
+        }
+
+        function closeInbox() {
+            document.getElementById('inboxModal').style.display = 'none';
+            fetchUnreadCounts();
+        }
+
+        function closeDM() {
+            document.getElementById('conversationList').style.display = 'block';
+            document.getElementById('dmSection').style.display = 'none';
+            fetchConversations();
+        }
+
+        function fetchConversations() {
+            fetch('/get_all_conversations')
+                .then(response => response.json())
+                .then(data => {
+                    const conversationList = document.getElementById('conversationList');
+                    conversationList.innerHTML = '';
+                    data.forEach(conv => {
+                        const div = document.createElement('div');
+                        div.className = 'conversation' + (conv.unread ? ' unread' : '');
+                        div.innerHTML = `
+                            <span>${conv.name}</span>
+                            <button class="open-btn" onclick="openConversation(${conv.receiver_id})">Open</button>
+                        `;
+                        conversationList.appendChild(div);
+                    });
+                });
+        }
+
+        function openConversation(receiverId) {
+            currentReceiverId = receiverId;
+            document.getElementById('dmSection').style.display = 'block';
+            document.getElementById('conversationList').style.display = 'none';
+            fetchConversationByReceiver(receiverId);
+        }
+
+        function fetchConversationByReceiver(receiverId) {
+            fetch(`/get_conversation?receiver_id=${receiverId}`)
+                .then(response => response.json())
+                .then(data => {
+                    const dmMessages = document.getElementById('dmMessages');
+                    dmMessages.innerHTML = '';
+                    document.getElementById('dmHeaderName').textContent = data.receiver_name;
+                    data.messages.forEach(msg => {
+                        const isSent = msg.sender_id === {{ session['user_id'] }};
+                        const senderDisplay = isSent ? 'You' : (msg.sender_email || 'Unknown');
+                        let content = `<strong>${senderDisplay}:</strong> <span class="message-content">${msg.message}</span>`;
+                        if (msg.media_path) {
+                            const mediaUrl = `/static/uploads/${msg.media_path}`;
+                            if (msg.media_type === 'image') {
+                                content += `<br><img src="${mediaUrl}" class="media-content" alt="Image">`;
+                            } else if (msg.media_type === 'video') {
+                                content += `<br><video src="${mediaUrl}" class="media-content video" controls></video>`;
+                            } else if (msg.media_type === 'audio') {
+                                content += `<br><audio id="audio-${msg.id}" src="${mediaUrl}" class="media-content audio" controls></audio>`;
+                            }
+                        }
+                        const messageDiv = document.createElement('div');
+                        messageDiv.className = isSent ? 'sent-message' : 'received-message';
+                        messageDiv.innerHTML = `
+                            <div class="message">${content}</div>
+                            <div class="message-actions">
+                                <button class="action-btn" onclick="replyToMessage(${msg.id}, ${receiverId})">↩️</button>
+                                <button class="action-btn" onclick="showReactionPicker(${msg.id}, event)">👍</button>
+                                <button class="action-btn" onclick="copyMessage(${msg.id})">📋</button>
+                                <button class="action-btn" onclick="deleteForMe(${msg.id})">🗑️</button>
+                            </div>
+                        `;
+                        dmMessages.appendChild(messageDiv);
+                    });
+                    dmMessages.scrollTop = dmMessages.scrollHeight;
+                });
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('dmInput');
+            const message = input.value.trim();
+            if (message && currentReceiverId) {
+                const formData = new FormData();
+                formData.append('receiver_id', currentReceiverId);
+                formData.append('message', message);
+                fetch('/send_message', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        input.value = '';
+                        fetchConversationByReceiver(currentReceiverId);
+                    } else {
+                        alert('Failed to send message: ' + (data.error || 'Unknown error'));
+                    }
+                })
+                .catch(error => {
+                    console.error('Network error:', error);
+                    alert('Network error occurred while sending message.');
+                });
+            }
+        }
+
+        function handleMediaUpload(event) {
+            const file = event.target.files[0];
+            if (file && currentReceiverId) {
+                const formData = new FormData();
+                formData.append('file', file);
+                formData.append('receiver_id', currentReceiverId);
+                fetch('/upload_media', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        fetchConversationByReceiver(currentReceiverId);
+                    }
+                });
+            }
+        }
+
+        function toggleRecording() {
+            if (!isRecording) {
+                startRecording();
+            } else {
+                stopRecording();
+            }
+        }
+
+        function startRecording() {
+            navigator.mediaDevices.getUserMedia({ audio: true })
+                .then(stream => {
+                    mediaRecorders[currentReceiverId] = new MediaRecorder(stream);
+                    audioChunks[currentReceiverId] = [];
+                    mediaRecorders[currentReceiverId].ondataavailable = e => audioChunks[currentReceiverId].push(e.data);
+                    mediaRecorders[currentReceiverId].onstop = () => sendAudio();
+                    mediaRecorders[currentReceiverId].start();
+                    document.querySelector('.mic-btn').classList.add('recording');
+                    isRecording = true;
+                });
+        }
+
+        function stopRecording() {
+            mediaRecorders[currentReceiverId].stop();
+            mediaRecorders[currentReceiverId].stream.getTracks().forEach(track => track.stop());
+            document.querySelector('.mic-btn').classList.remove('recording');
+            isRecording = false;
+        }
+
+        function sendAudio() {
+            const audioBlob = new Blob(audioChunks[currentReceiverId], { type: 'audio/webm' });
+            const formData = new FormData();
+            formData.append('file', audioBlob, 'recording.webm');
+            formData.append('receiver_id', currentReceiverId);
+            fetch('/upload_media', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    fetchConversationByReceiver(currentReceiverId);
+                }
+            });
+        }
+
+        function showEmojiPicker() {
+            const emojis = ['😊', '😂', '👍', '❤️', '😢'];
+            let picker = prompt('Select an emoji: ' + emojis.join(' '));
+            if (picker && emojis.includes(picker)) {
+                addEmoji(picker);
+            }
+        }
+
+        function addEmoji(emoji) {
+            const input = document.getElementById('dmInput');
+            input.value += emoji;
+            input.focus();
+        }
+
+        function replyToMessage(messageId, receiverId) {
+            const reply = prompt('Enter your reply:');
+            if (reply) {
+                fetch('/send_message', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ receiver_id: receiverId, content: reply, reply_to: messageId })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        fetchConversationByReceiver(receiverId);
+                    }
+                });
+            }
+        }
+
+        function deleteForMe(messageId) {
+            if (confirm('Delete this message for yourself?')) {
+                fetch(`/delete_message_for_me/${messageId}`, { method: 'POST' })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            fetchConversationByReceiver(currentReceiverId);
+                        }
+                    });
+            }
+        }
+
+        function showReactionPicker(messageId, event) {
+            const reactions = ['👍', '❤️', '😂', '😢', '😡'];
+            const picker = prompt('Select a reaction: ' + reactions.join(' '));
+            if (picker && reactions.includes(picker)) {
+                addReaction(messageId, picker);
+            }
+        }
+
+        function addReaction(messageId, reaction) {
+            fetch('/add_reaction', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message_id: messageId, reaction: reaction })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    fetchConversationByReceiver(currentReceiverId);
+                }
+            });
+        }
+
+        function copyMessage(messageId) {
+            fetch(`/get_message/${messageId}`)
+                .then(response => response.json())
+                .then(data => {
+                    navigator.clipboard.writeText(data.content);
+                    alert('Message copied to clipboard!');
+                });
+        }
+
+        function toggleVideoOptions() {
+            const videoOptions = document.getElementById('videoOptions');
+            videoOptions.style.display = videoOptions.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function toggleVideoRecording() {
+            if (!isVideoRecording) {
+                startVideoRecording();
+            } else {
+                stopVideoRecording();
+            }
+        }
+
+        function startVideoRecording() {
+            navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+                .then(stream => {
+                    videoRecorder = new MediaRecorder(stream);
+                    videoChunks = [];
+                    videoRecorder.ondataavailable = e => videoChunks.push(e.data);
+                    videoRecorder.onstop = sendVideo;
+                    videoRecorder.start();
+                    isVideoRecording = true;
+                    document.querySelector('.video-btn').style.color = '#ff3b3b';
+                });
+        }
+
+        function stopVideoRecording() {
+            videoRecorder.stop();
+            videoRecorder.stream.getTracks().forEach(track => track.stop());
+            isVideoRecording = false;
+            document.querySelector('.video-btn').style.color = '#1da1f2';
+        }
+
+        function sendVideo() {
+            const videoBlob = new Blob(videoChunks, { type: 'video/webm' });
+            const formData = new FormData();
+            formData.append('file', videoBlob, 'video.webm');
+            formData.append('receiver_id', currentReceiverId);
+            fetch('/upload_media', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    fetchConversationByReceiver(currentReceiverId);
+                }
+            });
+        }
+
+        let currentUserId = null;
+        let currentAction = null;
+        const actionTitles = {
+            'remove_provider': 'Remove Provider',
+            'ban_provider': 'Ban Provider',
+            'remove_customer': 'Remove Customer',
+            'ban_customer': 'Ban Customer'
+        };
+
+        function openActionModal(userId, action) {
+            currentUserId = userId;
+            currentAction = action;
+            document.getElementById('actionTitle').textContent = actionTitles[action];
+            document.getElementById('actionReason').value = '';
+            const modal = document.getElementById('actionModal');
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('show'), 10);
+        }
+
+        function closeActionModal() {
+            const modal = document.getElementById('actionModal');
+            modal.classList.remove('show');
+            setTimeout(() => modal.style.display = 'none', 300);
+        }
+
+        function confirmAction() {
+            const reason = document.getElementById('actionReason').value.trim();
+            if (!reason) {
+                showResultModal('Error', 'Please providegave a reason.');
+                return;
+            }
+            let endpoint = '';
+            switch (currentAction) {
+                case 'remove_provider':
+                    endpoint = '/admin_remove_provider_with_reason';
+                    break;
+                case 'ban_provider':
+                    endpoint = '/admin_ban_provider_with_reason';
+                    break;
+                case 'remove_customer':
+                    endpoint = '/admin_remove_customer_with_reason';
+                    break;
+                case 'ban_customer':
+                    endpoint = '/admin_ban_customer_with_reason';
+                    break;
+                default:
+                    showResultModal('Error', 'Invalid action');
+                    return;
+            }
+            fetch(endpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ user_id: currentUserId, reason: reason })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showResultModal('Success', 'Action completed successfully.');
+                    setTimeout(() => {
+                        closeResultModal();
+                        location.reload();
+                    }, 1500);
+                } else {
+                    showResultModal('Error', 'Error: ' + data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showResultModal('Error', 'An error occurred. Please try again.');
+            });
+            closeActionModal();
+        }
+
+        let unbanUserId = null;
+        let unbanType = null;
+        let returnUserId = null;
+        let returnType = null;
+
+        function openUnbanModal(type, userId) {
+            unbanUserId = userId;
+            unbanType = type;
+            document.getElementById('unbanType').textContent = type;
+            const modal = document.getElementById('unbanModal');
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('show'), 10);
+        }
+
+        function closeUnbanModal() {
+            const modal = document.getElementById('unbanModal');
+            modal.classList.remove('show');
+            setTimeout(() => modal.style.display = 'none', 300);
+        }
+
+        function confirmUnban() {
+            const endpoint = `/admin_unban_${unbanType}/${unbanUserId}`;
+            window.location.href = endpoint;
+            closeUnbanModal();
+        }
+
+        function openReturnModal(type, userId) {
+            returnUserId = userId;
+            returnType = type;
+            document.getElementById('returnType').textContent = type;
+            const modal = document.getElementById('returnModal');
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('show'), 10);
+        }
+
+        function closeReturnModal() {
+            const modal = document.getElementById('returnModal');
+            modal.classList.remove('show');
+            setTimeout(() => modal.style.display = 'none', 300);
+        }
+
+        function confirmReturn() {
+            const endpoint = `/admin_return_${returnType}/${returnUserId}`;
+            window.location.href = endpoint;
+            closeReturnModal();
+        }
+
+        function showResultModal(title, message) {
+            document.getElementById('resultTitle').textContent = title;
+            document.getElementById('resultMessage').textContent = message;
+            const modal = document.getElementById('resultModal');
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('show'), 10);
+        }
+
+        function closeResultModal() {
+            const modal = document.getElementById('resultModal');
+            modal.classList.remove('show');
+            setTimeout(() => modal.style.display = 'none', 300);
+        }
+
+        // Feedback Functions (Updated)
+        function viewFeedback() {
+            document.getElementById('feedbackModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+            fetchFeedback();
+            markFeedbackAsSeen();
+        }
+
+        function closeFeedback() {
+            document.getElementById('feedbackModal').style.display = 'none';
+            document.body.style.overflow = ''; // Restore default scrolling
+        }
+
+        function fetchFeedback() {
+            fetch('/api/admin/feedback')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch feedback: ' + response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(feedback => {
+                    const feedbackList = document.getElementById('feedbackList');
+                    feedbackList.innerHTML = '';
+                    if (feedback.length > 0) {
+                        feedback.forEach(item => {
+                            const li = document.createElement('li');
+                            li.innerHTML = `
+                                <strong>${item.customer_name || 'Anonymous'}</strong><br>
+                                <strong>Feedback:</strong> ${item.feedback}<br>
+                                <strong>Date:</strong> ${item.timestamp || 'N/A'}<br>
+                                <button class="button" onclick="deleteFeedback(${item.id})">Delete</button>
+                            `;
+                            feedbackList.appendChild(li);
+                        });
+                    } else {
+                        feedbackList.innerHTML = '<li>No feedback available.</li>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching feedback:', error);
+                    const feedbackList = document.getElementById('feedbackList');
+                    feedbackList.innerHTML = '<li>Failed to load feedback. Please try again later.</li>';
+                });
+        }
+
+        function deleteFeedback(feedbackId) {
+            if (confirm('Are you sure you want to delete this feedback?')) {
+                fetch('/api/admin/delete_feedback', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ feedback_id: feedbackId })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        fetchFeedback(); // Refresh the list
+                    } else {
+                        alert('Failed to delete feedback: ' + data.error);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error deleting feedback:', error);
+                    alert('An error occurred while deleting feedback.');
+                });
+            }
+        }
+
+        function deleteAllFeedback() {
+            if (confirm('Are you sure you want to delete all feedbacks?')) {
+                fetch('/api/admin/delete_all_feedback', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        fetchFeedback(); // Refresh the list
+                    } else {
+                        alert('Failed to delete all feedbacks: ' + data.error);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error deleting all feedbacks:', error);
+                    alert('An error occurred while deleting all feedbacks.');
+                });
+            }
+        }
+
+        function viewNotifications() {
+            document.getElementById('adminNotificationModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+            fetchAdminNotifications();
+        }
+
+        function closeAdminNotifications() {
+            fetch('/api/admin/delete_read_notifications', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        console.log(`Deleted ${data.deleted_count} read notifications`);
+                    }
+                })
+                .catch(error => console.error('Error deleting read notifications:', error));
+            document.getElementById('adminNotificationModal').style.display = 'none';
+            document.body.style.overflow = ''; // Restore default scrolling
+            updateNotificationCount();
+        }
+
+        function fetchAdminNotifications() {
+            fetch('/api/admin/notifications')
+                .then(response => response.json())
+                .then(notifications => {
+                    const notificationList = document.getElementById('adminNotificationList');
+                    notificationList.innerHTML = '';
+                    if (notifications.length > 0) {
+                        notifications.forEach(notif => {
+                            const li = document.createElement('li');
+                            li.innerHTML = `
+                                <strong>${notif.message}</strong><br>
+                                <strong>Read:</strong> ${notif.is_read ? 'Yes' : 'No'}<br>
+                                ${!notif.is_read ? `<button class="button" onclick="markNotificationAsRead(${notif.id})">Mark as Read</button>` : ''}
+                            `;
+                            notificationList.appendChild(li);
+                        });
+                    } else {
+                        notificationList.innerHTML = '<li>No notifications available.</li>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching notifications:', error);
+                    const notificationList = document.getElementById('adminNotificationList');
+                    notificationList.innerHTML = '<li>Failed to load notifications. Please try again later.</li>';
+                });
+        }
+
+        function markNotificationAsRead(notificationId) {
+            fetch('/api/admin/mark_notification_read', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ notification_id: notificationId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    fetchAdminNotifications();
+                    updateNotificationCount();
+                } else {
+                    alert('Failed to mark notification as read: ' + data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error marking notification as read:', error);
+                alert('An error occurred while marking notification as read.');
+            });
+        }
+
+        function updateNotificationCount() {
+            fetch('/api/admin/unread_notifications_count')
+                .then(response => response.json())
+                .then(data => {
+                    const count = data.count;
+                    const badge = document.getElementById('notificationCountBadge');
+                    badge.textContent = count > 0 ? count : '';
+                })
+                .catch(error => console.error('Error fetching unread notifications count:', error));
+        }
+
+        // Update window.onload
+        window.onload = function() {
+            fetchKPIs();
+            fetchAlerts();
+            fetchServices();
+            fetchUnreadCounts();
+            fetchNewFeedbackCount();
+            updateNotificationCount();
+            setInterval(fetchUnreadCounts, 10000); // Messages unread count every 10s
+            setInterval(fetchNewFeedbackCount, 30000); // Feedback count every 30s
+            setInterval(updateNotificationCount, 5000); // Notification count every 5s (was 30s)
+        };
+
+        function markFeedbackAsSeen() {
+            fetch('/api/admin/mark_feedback_seen', { method: 'POST' })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        fetchNewFeedbackCount(); // Update the count immediately
+                    }
+                })
+                .catch(error => console.error('Error marking feedback as seen:', error));
+        }
+
+        window.onload = function() {
+            fetchKPIs();
+            fetchAlerts();
+            fetchServices();
+            fetchUnreadCounts();
+            fetchNewFeedbackCount();
+            updateNotificationCount();
+            setInterval(updateNotificationCount, 1000); // Changed to 1 second
+            setInterval(fetchUnreadCounts, 10000); // Messages unread count every 10s
+            setInterval(fetchNewFeedbackCount, 30000); // Feedback count every 30s
+            // Add visibilitychange listener
+            document.addEventListener('visibilitychange', function() {
+                if (document.visibilityState === 'visible') {
+                    updateNotificationCount();
+                }
+            });
+        };
+
+
+    </script>
+</body>
+</html>

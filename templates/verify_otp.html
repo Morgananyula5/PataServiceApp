@@ -1,0 +1,7 @@
+<h2>Verify Phone Number</h2>
+
+<form method="POST" action="{{ url_for('verify_otp') }}">
+    <input type="hidden" name="phone" value="{{ phone }}">
+    <input type="text" name="otp" placeholder="Enter 6-digit code" required>
+    <button type="submit">Verify</button>
+</form>
