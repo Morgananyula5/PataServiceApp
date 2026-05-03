@@ -4504,67 +4504,74 @@
     /* === FIX: Reduce size + move upward for the two buttons (mobile only) === */
     @media screen and (max-width: 768px) {
 
-        /* Ensure both buttons are centered (alignment baseline) */
+        /* Move BOTH buttons upward together */
         .job-history-btn {
             display: block;
             margin-left: auto;
             margin-right: auto;
         }
 
-        /* TARGET ONLY the Favorites button (second one) */
+        /* Push the FIRST button (Job History) up ~2 inches */
+        .job-history-btn:first-of-type {
+            position: relative;
+            top: -80px;   /* ~2 inches upward (adjust slightly if needed) */
+        }
+
+        /* Place Favorites directly below it and aligned */
         .job-history-btn:nth-of-type(2) {
             position: relative;
-            top: -10px;              /* Move up ~1cm (adjust slightly if needed) */
-            align-self: center;      /* Ensures vertical alignment with the first */
-            margin-left: auto;       /* Override inline margin-left: 10px */
+            top: -80px;           /* same upward shift */
+            margin-left: auto;    /* override inline margin */
             margin-right: auto;
+            display: block;
         }
 
     }
-
 
 
     @media (max-width: 768px) {
 
-        /* Parent container: force vertical stacking */
-        .service-categories-btn {
-            display: block;
-            width: 50% !important;          /* half size */
-            font-size: 12px !important;
-            padding: 6px 8px !important;
-            margin: 6px auto !important;    /* center horizontally */
+        /* Container just below search filter */
+        .search-filter-container {
+            margin-bottom: 60px; /* create space for buttons */
             position: relative;
-            top: -20px;                     /* move upward (~half inch visually) */
         }
 
-        /* FIRST: Post to all providers */
+        /* Base button styling */
+        .service-categories-btn {
+            position: absolute;
+            top: 100%;                  /* place just below search container */
+            transform: translateY(10px);
+            width: 42% !important;      /* reduced width */
+            padding: 12px 10px !important; /* increased height */
+            font-size: 13px !important;
+            line-height: 1.4;
+            text-align: center;
+            white-space: normal;        /* allow text wrapping */
+        }
+
+        /* LEFT: Post something */
         button[onclick="openCustomerPostModal()"] {
-            display: block;
-            order: 1;
+            left: 0;
         }
 
-        /* SECOND: Service Categories (below it) */
+        /* RIGHT: Service Categories */
         button[onclick="openServiceCategoriesPopup()"] {
-            display: block;
-            order: 2;
+            right: 0;
         }
 
-        /* Force proper stacking regardless of surrounding layout */
-        button[onclick="openCustomerPostModal()"],
+        /* Ensure Service Categories has more height */
         button[onclick="openServiceCategoriesPopup()"] {
-            width: 50% !important;
+            padding: 14px 10px !important;
         }
 
-        /* Ensure they stack even if parent is flex row */
-        h2 + button[onclick="openServiceCategoriesPopup()"] {
-            display: block;
-        }
-
-        /* Optional: enforce vertical flow if parent is flex */
-        body, .grid-container, .search-filter-container {
-            flex-wrap: wrap;
+        /* Move heading below buttons */
+        h2[data-i18n="allProviders"] {
+            margin-top: 100px !important; /* pushes it below the buttons */
+            text-align: center;
         }
     }
+
 
 
 
