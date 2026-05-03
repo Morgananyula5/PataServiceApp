@@ -4523,6 +4523,27 @@
 
     }
 
+    @media screen and (max-width: 768px) {
+
+        /* Ensure both buttons are centered (alignment baseline) */
+        .job-history-btn {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* TARGET ONLY the Favorites button (second one) */
+        .job-history-btn:nth-of-type(2) {
+            position: relative;
+            top: -10px;              /* Move up ~1cm (adjust slightly if needed) */
+            align-self: center;      /* Ensures vertical alignment with the first */
+            margin-left: auto;       /* Override inline margin-left: 10px */
+            margin-right: auto;
+        }
+
+    }
+
+
 
     @media (max-width: 768px) {
 
