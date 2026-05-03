@@ -4501,73 +4501,71 @@
         }
     }
 
-    /* === FIX: Reduce size + move upward for the two buttons (mobile only) === */
+    /* Mobile Fix - Job History & Favorites Buttons */
     @media screen and (max-width: 768px) {
 
-        /* Move BOTH buttons upward together */
         .job-history-btn {
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
+            position: relative !important;
+            top: -120px !important; /* Pushes button upward on mobile */
+            display: block !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+            width: 85% !important;
         }
 
-        /* Push the FIRST button (Job History) up ~2 inches */
-        .job-history-btn:first-of-type {
-            position: relative;
-            top: -80px;   /* ~2 inches upward (adjust slightly if needed) */
-        }
-
-        /* Place Favorites directly below it and aligned */
-        .job-history-btn:nth-of-type(2) {
-            position: relative;
-            top: -80px;           /* same upward shift */
-            margin-left: auto;    /* override inline margin */
-            margin-right: auto;
-            display: block;
+        button[onclick="viewFavorites()"] {
+            position: relative !important;
+            top: -105px !important; /* Slightly below Job History button */
+            display: block !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+            width: 85% !important;
         }
 
     }
 
 
+    /* MOBILE FIX ONLY */
     @media (max-width: 768px) {
 
-        /* Parent container: force vertical stacking */
-        .service-categories-btn {
-            display: block;
-            width: 50% !important;          /* half size */
-            font-size: 12px !important;
-            padding: 6px 8px !important;
-            margin: 6px auto !important;    /* center horizontally */
-            position: relative;
-            top: -20px;                     /* move upward (~half inch visually) */
-        }
+        .providers-header-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+            margin-bottom: 10px;
 
-        /* FIRST: Post to all providers */
-        button[onclick="openCustomerPostModal()"] {
-            display: block;
-            order: 1;
-        }
-
-        /* SECOND: Service Categories (below it) */
-        button[onclick="openServiceCategoriesPopup()"] {
-            display: block;
+            /* Move it just under filters */
             order: 2;
         }
 
-        /* Force proper stacking regardless of surrounding layout */
-        button[onclick="openCustomerPostModal()"],
-        button[onclick="openServiceCategoriesPopup()"] {
-            width: 50% !important;
+        .providers-header-row h2 {
+            width: 100%;
+            order: 3;
+            font-size: 20px;
+            margin-top: 15px;
         }
 
-        /* Ensure they stack even if parent is flex row */
-        h2 + button[onclick="openServiceCategoriesPopup()"] {
-            display: block;
+        .providers-header-row .service-categories-btn {
+            width: 48%;              /* reduce width so both fit left/right */
+            font-size: 12px;         /* slightly smaller text */
+            padding: 14px 8px;       /* increase height */
+            min-height: 50px;        /* enforce taller buttons */
+            line-height: 1.2;
+            border-radius: 8px;
         }
 
-        /* Optional: enforce vertical flow if parent is flex */
-        body, .grid-container, .search-filter-container {
-            flex-wrap: wrap;
+        /* LEFT BUTTON */
+        .providers-header-row .service-categories-btn:first-of-type {
+            order: 1;
+            text-align: center;
+        }
+
+        /* RIGHT BUTTON */
+        .providers-header-row .service-categories-btn:last-of-type {
+            order: 2;
+            text-align: center;
         }
     }
 
