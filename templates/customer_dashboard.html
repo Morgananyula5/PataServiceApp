@@ -4501,6 +4501,19 @@
         }
     }
 
+    /* === FIX: Reduce size + move upward for the two buttons (mobile only) === */
+    @media screen and (max-width: 768px) {
+
+        /* Targets BOTH buttons specifically (since they share the same class and sit together) */
+        .job-history-btn {
+            transform: scale(0.5);          /* Reduce to half size */
+            transform-origin: center;
+            margin-top: -20px;              /* Move upward (~1 inch visually) */
+        }
+
+    }
+
+
 
 </style>
     <script src="https://unpkg.com/i18next@21.6.16/dist/umd/i18next.min.js"></script>
