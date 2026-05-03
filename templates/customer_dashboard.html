@@ -4504,27 +4504,6 @@
     /* === FIX: Reduce size + move upward for the two buttons (mobile only) === */
     @media screen and (max-width: 768px) {
 
-        /* Parent container of the two buttons */
-        .job-history-btn-container {
-            display: flex;
-            flex-direction: column;   /* Keeps Job History above Favorites */
-            align-items: center;      /* Centers them horizontally (alignment fix) */
-            gap: 8px;                 /* Clean spacing between them */
-            position: relative;
-            top: -40px;               /* Moves BOTH buttons upward (~1 inch) */
-        }
-
-        /* Individual buttons */
-        .job-history-btn {
-            transform: scale(0.8);    /* Keep your size */
-            transform-origin: center;
-            width: auto;              /* Prevent stretch */
-        }
-
-    }
-
-    @media screen and (max-width: 768px) {
-
         /* Ensure both buttons are centered (alignment baseline) */
         .job-history-btn {
             display: block;
