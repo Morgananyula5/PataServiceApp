@@ -4502,15 +4502,14 @@
     }
 
     /* Mobile Fix - Job History & Favorites Buttons */
-    /* Mobile Fix - Job History & Favorites Buttons */
     @media screen and (max-width: 768px) {
 
         .job-history-btn {
             position: relative !important;
-            top: -170px !important; /* Moves both buttons further upward */
-            left: -12px !important; /* Pushes buttons near left wall */
+            top: -170px !important;
+            left: -12px !important;
             display: block !important;
-            width: 42% !important; /* Reduced to nearly half size */
+            width: 42% !important;
             max-width: 180px !important;
             margin-left: 0 !important;
             margin-right: 0 !important;
@@ -4518,11 +4517,13 @@
 
         button[onclick="viewFavorites()"] {
             position: relative !important;
-            top: -155px !important; /* Slightly below Job History button */
-            left: -12px !important;
+            top: -160px !important; /* Keeps it just below Job History */
+            left: -12px !important; /* Same left alignment */
             display: block !important;
-            width: 42% !important; /* Reduced width */
+            clear: both !important;
+            width: 42% !important;
             max-width: 180px !important;
+            margin-top: 10px !important; /* Space below Job History */
             margin-left: 0 !important;
             margin-right: 0 !important;
         }
@@ -4582,6 +4583,30 @@
         .providers-header-row .service-categories-btn:last-of-type {
             order: 2;
             text-align: center;
+        }
+    }
+
+    @media (max-width: 768px) {
+
+        /* Make parent a flex column so we can reorder */
+        .providers-container {   /* ⚠️ replace with your actual parent wrapper */
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Move buttons ABOVE filters */
+        .providers-header-row {
+            order: 1;
+        }
+
+        /* Filters come AFTER buttons */
+        .search-filter-container {
+            order: 2;
+        }
+
+        /* Keep heading below buttons */
+        .providers-header-row h2 {
+            order: 3;
         }
     }
 
