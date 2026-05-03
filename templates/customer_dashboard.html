@@ -4504,14 +4504,68 @@
     /* === FIX: Reduce size + move upward for the two buttons (mobile only) === */
     @media screen and (max-width: 768px) {
 
-        /* Targets BOTH buttons specifically (since they share the same class and sit together) */
+        /* Parent container of the two buttons */
+        .job-history-btn-container {
+            display: flex;
+            flex-direction: column;   /* Keeps Job History above Favorites */
+            align-items: center;      /* Centers them horizontally (alignment fix) */
+            gap: 8px;                 /* Clean spacing between them */
+            position: relative;
+            top: -40px;               /* Moves BOTH buttons upward (~1 inch) */
+        }
+
+        /* Individual buttons */
         .job-history-btn {
-            transform: scale(0.8);          /* Reduce to half size */
+            transform: scale(0.8);    /* Keep your size */
             transform-origin: center;
-            margin-top: -40px;              /* Move upward (~1 inch visually) */
+            width: auto;              /* Prevent stretch */
         }
 
     }
+
+
+    @media (max-width: 768px) {
+
+        /* Parent container: force vertical stacking */
+        .service-categories-btn {
+            display: block;
+            width: 50% !important;          /* half size */
+            font-size: 12px !important;
+            padding: 6px 8px !important;
+            margin: 6px auto !important;    /* center horizontally */
+            position: relative;
+            top: -20px;                     /* move upward (~half inch visually) */
+        }
+
+        /* FIRST: Post to all providers */
+        button[onclick="openCustomerPostModal()"] {
+            display: block;
+            order: 1;
+        }
+
+        /* SECOND: Service Categories (below it) */
+        button[onclick="openServiceCategoriesPopup()"] {
+            display: block;
+            order: 2;
+        }
+
+        /* Force proper stacking regardless of surrounding layout */
+        button[onclick="openCustomerPostModal()"],
+        button[onclick="openServiceCategoriesPopup()"] {
+            width: 50% !important;
+        }
+
+        /* Ensure they stack even if parent is flex row */
+        h2 + button[onclick="openServiceCategoriesPopup()"] {
+            display: block;
+        }
+
+        /* Optional: enforce vertical flow if parent is flex */
+        body, .grid-container, .search-filter-container {
+            flex-wrap: wrap;
+        }
+    }
+
 
 
 
