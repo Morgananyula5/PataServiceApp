@@ -4502,24 +4502,29 @@
     }
 
     /* Mobile Fix - Job History & Favorites Buttons */
+    /* Mobile Fix - Job History & Favorites Buttons */
     @media screen and (max-width: 768px) {
 
         .job-history-btn {
             position: relative !important;
-            top: -120px !important; /* Pushes button upward on mobile */
+            top: -170px !important; /* Moves both buttons further upward */
+            left: -12px !important; /* Pushes buttons near left wall */
             display: block !important;
-            margin-left: auto !important;
-            margin-right: auto !important;
-            width: 85% !important;
+            width: 42% !important; /* Reduced to nearly half size */
+            max-width: 180px !important;
+            margin-left: 0 !important;
+            margin-right: 0 !important;
         }
 
         button[onclick="viewFavorites()"] {
             position: relative !important;
-            top: -105px !important; /* Slightly below Job History button */
+            top: -155px !important; /* Slightly below Job History button */
+            left: -12px !important;
             display: block !important;
-            margin-left: auto !important;
-            margin-right: auto !important;
-            width: 85% !important;
+            width: 42% !important; /* Reduced width */
+            max-width: 180px !important;
+            margin-left: 0 !important;
+            margin-right: 0 !important;
         }
 
     }
@@ -4548,12 +4553,23 @@
         }
 
         .providers-header-row .service-categories-btn {
-            width: 48%;              /* reduce width so both fit left/right */
-            font-size: 12px;         /* slightly smaller text */
-            padding: 14px 8px;       /* increase height */
-            min-height: 50px;        /* enforce taller buttons */
-            line-height: 1.2;
+            width: 48%;
+            font-size: 12px;
+
+            padding: 14px 10px;
+            min-height: 60px;              /* slightly taller to allow 2 lines */
+
+            line-height: 1.3;
             border-radius: 8px;
+
+            display: flex;                 /* KEY FIX */
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+
+            white-space: normal;           /* allow wrapping */
+            word-break: break-word;        /* prevent overflow */
+            overflow: hidden;              /* safety */
         }
 
         /* LEFT BUTTON */
