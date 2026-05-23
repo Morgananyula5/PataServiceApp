@@ -4586,86 +4586,121 @@
         }
     }
 
+    /* MOBILE FIX ONLY */
     @media (max-width: 768px) {
 
-        /* Make parent a flex column so we can reorder */
-        .providers-container {   /* ⚠️ replace with your actual parent wrapper */
+        /* Parent wrapper */
+        .providers-container {
             display: flex;
             flex-direction: column;
         }
 
-        /* Move buttons ABOVE filters */
+        /* Move buttons ABOVE search filters */
         .providers-header-row {
             order: 1;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+
+            margin-top: 0;
+            margin-bottom: 12px;
         }
 
-        /* Filters come AFTER buttons */
+        /* Search filter comes AFTER buttons */
         .search-filter-container {
             order: 2;
         }
 
-        /* Keep heading below buttons */
+        /* Heading stays below buttons */
         .providers-header-row h2 {
+            width: 100%;
             order: 3;
+
+            font-size: 20px;
+            margin-top: 14px;
+            text-align: center;
+        }
+
+        /* REDUCED BUTTON SIZE */
+        .providers-header-row .service-categories-btn {
+            width: 47%;
+            font-size: 11px;
+
+            padding: 10px 8px;
+            min-height: 44px;
+
+            line-height: 1.2;
+            border-radius: 8px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+
+            white-space: normal;
+            word-break: break-word;
+            overflow: hidden;
+        }
+
+        /* LEFT BUTTON */
+        .providers-header-row .service-categories-btn:first-of-type {
+            order: 1;
+        }
+
+        /* RIGHT BUTTON */
+        .providers-header-row .service-categories-btn:last-of-type {
+            order: 2;
         }
     }
 
     /* Mobile Fix ONLY */
     @media screen and (max-width: 768px) {
 
-        .job-history-btn {
+        .search-bar {
             position: relative !important;
-            top: -175px !important;
-            left: auto !important;
+            display: flex !important;
+            flex-wrap: wrap !important;
+        }
+
+        .job-history-btn {
+            position: absolute !important;
             right: 0 !important;
+            top: -120px !important;
 
-            display: block !important;
-            width: 32% !important;
+            width: 130px !important;
             max-width: 130px !important;
-            min-width: unset !important;
-
-            margin-left: auto !important;
-            margin-right: 0 !important;
-            margin-bottom: 8px !important;
 
             font-size: 10px !important;
             padding: 8px 6px !important;
 
+            text-align: center !important;
             white-space: normal !important;
             word-break: break-word !important;
-            text-align: center !important;
 
-            float: right !important;
-            clear: right !important;
+            margin: 0 !important;
         }
 
         button[onclick="viewFavorites()"] {
-            position: relative !important;
-            top: -175px !important; /* SAME top value for perfect alignment */
-            left: auto !important;
+            position: absolute !important;
             right: 0 !important;
 
-            display: block !important;
-            width: 32% !important;
+            /* PERFECTLY BELOW JOB HISTORY */
+            top: -60px !important;
+
+            width: 130px !important;
             max-width: 130px !important;
-            min-width: unset !important;
-
-            margin-top: 0 !important;
-
-            margin-left: auto !important;
-            margin-right: 0 !important;
 
             font-size: 10px !important;
             padding: 8px 6px !important;
 
+            text-align: center !important;
             white-space: normal !important;
             word-break: break-word !important;
-            text-align: center !important;
 
-            float: right !important;
-            clear: right !important;
+            margin: 0 !important;
         }
-
     }
 
 
