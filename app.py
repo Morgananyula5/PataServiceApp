@@ -1276,14 +1276,12 @@ def signup():
                         flash("Email already registered.", "error")
                         return redirect(url_for("signup"))
 
-                verification_code = str(random.randint(100000, 999999))
-                expires_at = datetime.now() + timedelta(minutes=15)
-
-                send_verification_email(email, verification_code)
-
+                # Insert user directly as verified — no email code verification required
                 cursor.execute(
                     "INSERT INTO users (email, phone, password, role, is_verified, created_at, county, sub_county) VALUES (%s, %s, %s, %s, %s, %s, %s, %s) RETURNING id",
-                    (email, phone, hashed_password, role, False, datetime.now(), county if role == "customer" else None, sub_county if role == "customer" else None)
+                    (email, phone, hashed_password, role, True, datetime.now(),
+                     county if role == "customer" else None,
+                     sub_county if role == "customer" else None)
                 )
                 user_id = cursor.fetchone()['id']
 
@@ -1295,19 +1293,11 @@ def signup():
                         (admin_id, "new_user", f"New user registered: {email}")
                     )
 
-                cleanup_expired_codes(conn)
-
-                cursor.execute(
-                    "INSERT INTO verification_codes (email, code, expires_at) VALUES (%s, %s, %s)",
-                    (email, verification_code, expires_at)
-                )
                 conn.commit()
 
-                logging.info(f"Signup initiated for email: {email}, role: {role}, verification code stored, Session: %s", session)
-                session["pending_user_id"] = user_id
-                session["pending_user_email"] = email
-                flash("A verification code has been sent to your email. Please check your inbox or spam folder.", "success")
-                return redirect(url_for("verify_email"))
+                logging.info(f"Signup completed directly for email: {email}, role: {role}, Session: %s", session)
+                flash("Account created successfully! You can now log in.", "success")
+                return redirect(url_for("login"))
 
             elif "phone" in request.form:
                 if role != "provider":
@@ -1328,7 +1318,7 @@ def signup():
                         flash("Phone already registered.", "error")
                         return redirect(url_for("signup"))
 
-                # ✅ Store session
+                # Store session
                 session.permanent = True
                 session["pending_phone"] = phone
                 session["pending_password"] = hashed_password
@@ -1339,7 +1329,7 @@ def signup():
 
                 logging.info(f"OTP process started for phone: {phone}, role: {role}, Session AFTER SET: %s", session)
 
-                # ✅ Generate OTP
+                # Generate OTP
                 otp = generate_otp()
                 save_otp(phone, otp)
 
@@ -1347,20 +1337,13 @@ def signup():
 
                 success, response = send_sms(phone, message)
 
-                # ✅ KEY FIX: DO NOT BLOCK FLOW
                 if not success:
                     logging.error(f"SMS failed during signup: {response}")
-
-                    # ⚠️ Show warning instead of blocking
                     flash("SMS delivery failed. Use the OTP shown in console for testing.", "warning")
-
-                    # ✅ VERY IMPORTANT: Log OTP for testing
                     logging.info(f"TEST OTP for {phone}: {otp}")
-
                 else:
                     logging.info(f"OTP sent successfully to {phone}")
 
-                # ✅ ALWAYS CONTINUE
                 return redirect(url_for("verify_phone_page"))
 
             else:
