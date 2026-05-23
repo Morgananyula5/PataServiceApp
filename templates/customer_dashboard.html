@@ -4586,29 +4586,74 @@
         }
     }
 
+    /* MOBILE FIX ONLY */
     @media (max-width: 768px) {
 
-        /* Make parent a flex column so we can reorder */
-        .providers-container {   /* ⚠️ replace with your actual parent wrapper */
+        /* Parent layout */
+        .providers-container {
             display: flex;
             flex-direction: column;
         }
 
-        /* Move buttons ABOVE filters */
+        /* Move buttons section ABOVE filters */
         .providers-header-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+
             order: 1;
+
+            margin-top: 0;
+            margin-bottom: 12px;
         }
 
-        /* Filters come AFTER buttons */
+        /* Filters come below buttons */
         .search-filter-container {
             order: 2;
         }
 
-        /* Keep heading below buttons */
+        /* Heading stays below buttons */
         .providers-header-row h2 {
+            width: 100%;
             order: 3;
+
+            font-size: 20px;
+            margin-top: 14px;
+        }
+
+        /* SMALLER BUTTONS */
+        .providers-header-row .service-categories-btn {
+            width: 48%;
+            font-size: 11px;
+
+            padding: 10px 8px;
+            min-height: 46px;
+
+            line-height: 1.2;
+            border-radius: 8px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+
+            white-space: normal;
+            word-break: break-word;
+            overflow: hidden;
+        }
+
+        /* Left button */
+        .providers-header-row .service-categories-btn:first-of-type {
+            order: 1;
+        }
+
+        /* Right button */
+        .providers-header-row .service-categories-btn:last-of-type {
+            order: 2;
         }
     }
+
 
     /* Mobile Fix ONLY */
     @media screen and (max-width: 768px) {
