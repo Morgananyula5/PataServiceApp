@@ -4586,71 +4586,27 @@
         }
     }
 
-    /* MOBILE FIX ONLY */
     @media (max-width: 768px) {
 
-        /* Parent layout */
-        .providers-container {
+        /* Make parent a flex column so we can reorder */
+        .providers-container {   /* ⚠️ replace with your actual parent wrapper */
             display: flex;
             flex-direction: column;
         }
 
-        /* Move buttons section ABOVE filters */
+        /* Move buttons ABOVE filters */
         .providers-header-row {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
-
             order: 1;
-
-            margin-top: 0;
-            margin-bottom: 12px;
         }
 
-        /* Filters come below buttons */
+        /* Filters come AFTER buttons */
         .search-filter-container {
             order: 2;
         }
 
-        /* Heading stays below buttons */
+        /* Keep heading below buttons */
         .providers-header-row h2 {
-            width: 100%;
             order: 3;
-
-            font-size: 20px;
-            margin-top: 14px;
-        }
-
-        /* SMALLER BUTTONS */
-        .providers-header-row .service-categories-btn {
-            width: 48%;
-            font-size: 11px;
-
-            padding: 10px 8px;
-            min-height: 46px;
-
-            line-height: 1.2;
-            border-radius: 8px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-
-            white-space: normal;
-            word-break: break-word;
-            overflow: hidden;
-        }
-
-        /* Left button */
-        .providers-header-row .service-categories-btn:first-of-type {
-            order: 1;
-        }
-
-        /* Right button */
-        .providers-header-row .service-categories-btn:last-of-type {
-            order: 2;
         }
     }
 
@@ -4707,6 +4663,59 @@
             clear: both !important;
         }
 
+    }
+
+    /* MOBILE FIX - Move buttons above search filters and reduce size */
+    @media (max-width: 768px) {
+        
+        /* Enable flexbox reordering on main content */
+        #mainContent {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Position buttons ABOVE search filters */
+        .providers-header-row {
+            order: -2;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+            margin: 15px 0 15px 0;
+            padding: 0 10px;
+        }
+
+        /* Ensure search comes after buttons */
+        .search-filter-container {
+            order: -1;
+            margin-top: 0;
+        }
+
+        /* Reduce button sizes */
+        .providers-header-row .service-categories-btn {
+            width: 48% !important;
+            font-size: 11px !important;
+            padding: 10px 8px !important;
+            min-height: 48px !important;
+            max-height: 48px !important;
+            line-height: 1.2 !important;
+            border-radius: 8px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            text-align: center !important;
+            white-space: normal !important;
+            word-break: break-word !important;
+        }
+
+        /* Keep heading below buttons */
+        .providers-header-row h2 {
+            width: 100%;
+            order: 3;
+            font-size: 18px;
+            margin-top: 15px;
+        }
     }
 
 </style>
