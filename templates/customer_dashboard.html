@@ -4664,59 +4664,7 @@
         }
 
     }
-
-    /* MOBILE FIX - Move buttons above search filters and reduce size */
-    @media (max-width: 768px) {
-        
-        /* Enable flexbox reordering on main content */
-        #mainContent {
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* Position buttons ABOVE search filters */
-        .providers-header-row {
-            order: -2;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
-            gap: 8px;
-            margin: 15px 0 15px 0;
-            padding: 0 10px;
-        }
-
-        /* Ensure search comes after buttons */
-        .search-filter-container {
-            order: -1;
-            margin-top: 0;
-        }
-
-        /* Reduce button sizes */
-        .providers-header-row .service-categories-btn {
-            width: 48% !important;
-            font-size: 11px !important;
-            padding: 10px 8px !important;
-            min-height: 48px !important;
-            max-height: 48px !important;
-            line-height: 1.2 !important;
-            border-radius: 8px !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            text-align: center !important;
-            white-space: normal !important;
-            word-break: break-word !important;
-        }
-
-        /* Keep heading below buttons */
-        .providers-header-row h2 {
-            width: 100%;
-            order: 3;
-            font-size: 18px;
-            margin-top: 15px;
-        }
-    }
+    
 
 </style>
     <script src="https://unpkg.com/i18next@21.6.16/dist/umd/i18next.min.js"></script>
