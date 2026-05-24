@@ -4664,6 +4664,66 @@
         }
 
     }
+
+    /* MOBILE FIX ONLY */
+    @media screen and (max-width: 768px) {
+
+        /* Move buttons ABOVE search filters */
+        .providers-header-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+
+            margin-top: -10px;
+            margin-bottom: 12px;
+
+            /* Pull section upward above filters */
+            position: relative;
+            top: -220px;
+        }
+
+        /* Reduce button sizes */
+        .providers-header-row .service-categories-btn {
+            width: 47%;
+            font-size: 11px;
+            padding: 9px 8px;
+            min-height: 44px;
+
+            border-radius: 8px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+
+            line-height: 1.2;
+            white-space: normal;
+            word-break: break-word;
+        }
+
+        /* Keep heading below buttons */
+        .providers-header-row h2 {
+            width: 100%;
+            order: 3;
+            font-size: 20px;
+            margin-top: 14px;
+        }
+
+        .providers-header-row .service-categories-btn:first-of-type {
+            order: 1;
+        }
+
+        .providers-header-row .service-categories-btn:last-of-type {
+            order: 2;
+        }
+
+        /* Pull search filter slightly downward
+        so buttons appear above it */
+        .search-filter-container {
+            margin-top: 70px;
+        }
+    }
     
 
 </style>
