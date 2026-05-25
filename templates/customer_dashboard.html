@@ -4699,6 +4699,16 @@
         }
 
     }
+
+    /* Mobile-only fix for spacing between the two buttons */
+    @media screen and (max-width: 768px) {
+        .post-all-btns-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5cm; /* Adds half centimetre spacing between buttons */
+        }
+    }
     
 
 </style>
