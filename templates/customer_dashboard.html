@@ -4700,31 +4700,79 @@
 
     }
 
-    /* Mobile Fix For Search Bar Width */
-    @media screen and (max-width: 768px) {
-        .search-bar {
+    /* MOBILE FIX ONLY */
+    @media (max-width: 768px) {
+
+        .providers-header-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            gap: 0.5cm; /* Added spacing between the two buttons */
+
+            /* Move it just under filters */
+            order: 2;
+        }
+
+        .providers-header-row .service-categories-btn {
+            width: calc(50% - 0.25cm); /* Prevents overflow after adding gap */
+            font-size: 12px;
+
+            padding: 14px 10px;
+            min-height: 60px;
+
+            line-height: 1.3;
+            border-radius: 8px;
+
             display: flex;
             align-items: center;
-            width: 100%;
-        }
+            justify-content: center;
+            text-align: center;
 
-        .search-bar input {
-            width: calc(100% - 55px);
-            min-width: 0;
-            flex: 1;
-            padding: 12px 10px;
-            font-size: 14px;
-            box-sizing: border-box;
-        }
-
-        .search-button {
-            width: 42px;
-            height: 42px;
-            flex-shrink: 0;
-            margin-left: 8px;
+            white-space: normal;
+            word-break: break-word;
+            overflow: hidden;
         }
     }
+
+    /* MOBILE BUTTON SIZE FIX ONLY */
+    @media (max-width: 768px) {
+
+        .providers-header-row .service-categories-btn {
+            width: 36% !important;
+            max-width: 115px !important;
+
+            font-size: 9px !important;
+            font-weight: 600 !important;
+
+            padding: 6px 5px !important;
+            min-height: 34px !important;
+
+            line-height: 1.2 !important;
+            border-radius: 8px !important;
+
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            text-align: center !important;
+
+            white-space: normal !important;
+            word-break: break-word !important;
+            overflow: hidden !important;
+
+            box-sizing: border-box !important;
+        }
+
+        .providers-header-row {
+            gap: 20px !important;
+            justify-content: center !important;
+        }
+
+    }
     
+
 </style>
     <script src="https://unpkg.com/i18next@21.6.16/dist/umd/i18next.min.js"></script>
 </head>
